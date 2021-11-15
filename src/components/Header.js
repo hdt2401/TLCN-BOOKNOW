@@ -13,10 +13,12 @@ function Header() {
     if (user) {
       setCurrentUser(user);
     }
+    console.log(user);
   }, []);
 
   const logOut = () => {
     AuthService.logout();
+    setCurrentUser(undefined);
   };
   return (
     <header>
@@ -43,41 +45,26 @@ function Header() {
                 <Link to={"/home"} className="nav-link">
                   Trang chủ
                 </Link>
-                {/* <a className="nav-link" href="/#">
-                  Trang chủ
-                </a> */}
               </li>
               <li className="nav-item">
                 <Link to={"/cars"} className="nav-link">
                   Nhà xe
                 </Link>
-                {/* <a className="nav-link" href="/#">
-                  Nhà xe
-                </a> */}
               </li>
               <li className="nav-item">
                 <Link to={"/routes"} className="nav-link">
                   Tuyến xe
                 </Link>
-                {/* <a className="nav-link" href="/#">
-                  Tuyến xe
-                </a> */}
               </li>
               <li className="nav-item">
                 <Link to={"/contact"} className="nav-link">
                   Liên hệ
                 </Link>
-                {/* <a className="nav-link" href="/#">
-                  Liên hệ
-                </a> */}
               </li>
               <li className="nav-item">
                 <Link to={"/about"} className="nav-link">
                   Về chúng tôi
                 </Link>
-                {/* <a className="nav-link" href="/#">
-                  Về chúng tôi
-                </a> */}
               </li>
               {currentUser ? (
                 <ul className="navbar-nav navbar-register">
@@ -87,7 +74,7 @@ function Header() {
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link to={"/signup"} className="nav-link" onClick={logOut}>
+                    <Link to={"/login"} className="nav-link" onClick={logOut}>
                       Logout
                     </Link>
                   </li>

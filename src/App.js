@@ -13,6 +13,9 @@ import NotFound from "./components/NotFound";
 import Welcome from "./components/Welcome";
 import Profile from "./components/Profile";
 import CarList from "./components/CarList";
+import ChangePassword from "./components/ChangePassword";
+import UpdateUser from "./components/UpdateUser";
+import CarDetails from "./components/CarDetails";
 
 function App() {
   return (
@@ -25,7 +28,10 @@ function App() {
         <Route path="/signup" component={Register} />
         <Route path="/confirm/:confirmationCode" component={Welcome} />
         <Route exact path="/profile" component={Profile} />
+        <Route exact path="/user/changepassword" component={ChangePassword} />
+        <Route exact path="/user/update" component={UpdateUser} />
         <Route path="/carlist" component={CarList} />
+        <Route path="/cars/:id" component={CarDetails} />
         <Route path="*" component={NotFound} />
       </Switch>
       {/* <Footer /> */}

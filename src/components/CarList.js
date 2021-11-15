@@ -1,118 +1,45 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import CarService from "../services/car.service";
 
 function CarList(props) {
+  const [cars, setCars] = useState([]);
+  useEffect(() => {
+    retrieveCars();
+    console.log(cars);
+  }, []);
+
+  const retrieveCars = () => {
+    CarService.getCarList()
+      .then((response) => {
+        //setCategories(response.data);
+        setCars(response.data.data.cars);
+        console.log(response.data.data.cars);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
   return (
     <div className="container">
       <h2>Danh sách nhà xe</h2>
       <div class="card-group">
-        <div class="card">
-          <img
-            class="card-img-top"
-            src="https://static.vexere.com/production/images/1589432483289.jpeg"
-            alt="Card image cap"
-          />
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">
-              This is a wider card with supporting text below as a natural
-              lead-in to additional content. This content is a little bit
-              longer.
-            </p>
+        {cars.map((car, index) => (
+          <div class="card">
+            <img
+              class="card-img-top"
+              src="https://static.vexere.com/production/images/1589432483289.jpeg"
+              alt="Card image cap"
+            />
+            <div class="card-body">
+              <h5 class="card-title">{car.name}</h5>
+              <p class="card-text">{car.station}</p>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted">{car.capacity}</small>
+            </div>
           </div>
-          <div class="card-footer">
-            <small class="text-muted">Last updated 3 mins ago</small>
-          </div>
-        </div>
-        <div class="card">
-          <img
-            class="card-img-top"
-            src="https://static.vexere.com/production/images/1589432483289.jpeg"
-            alt="Card image cap"
-          />
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">
-              This card has supporting text below as a natural lead-in to
-              additional content.
-            </p>
-          </div>
-          <div class="card-footer">
-            <small class="text-muted">Last updated 3 mins ago</small>
-          </div>
-        </div>
-        <div class="card">
-          <img
-            class="card-img-top"
-            src="https://static.vexere.com/production/images/1589432483289.jpeg"
-            alt="Card image cap"
-          />
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">
-              This is a wider card with supporting text below as a natural
-              lead-in to additional content. This card has even longer content
-              than the first to show that equal height action.
-            </p>
-          </div>
-          <div class="card-footer">
-            <small class="text-muted">Last updated 3 mins ago</small>
-          </div>
-        </div>
-      </div>
-      <div class="card-group">
-        <div class="card">
-          <img
-            class="card-img-top"
-            src="https://static.vexere.com/production/images/1589432483289.jpeg"
-            alt="Card image cap"
-          />
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">
-              This is a wider card with supporting text below as a natural
-              lead-in to additional content. This content is a little bit
-              longer.
-            </p>
-          </div>
-          <div class="card-footer">
-            <small class="text-muted">Last updated 3 mins ago</small>
-          </div>
-        </div>
-        <div class="card">
-          <img
-            class="card-img-top"
-            src="https://static.vexere.com/production/images/1589432483289.jpeg"
-            alt="Card image cap"
-          />
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">
-              This card has supporting text below as a natural lead-in to
-              additional content.
-            </p>
-          </div>
-          <div class="card-footer">
-            <small class="text-muted">Last updated 3 mins ago</small>
-          </div>
-        </div>
-        <div class="card">
-          <img
-            class="card-img-top"
-            src="https://static.vexere.com/production/images/1589432483289.jpeg"
-            alt="Card image cap"
-          />
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">
-              This is a wider card with supporting text below as a natural
-              lead-in to additional content. This card has even longer content
-              than the first to show that equal height action.
-            </p>
-          </div>
-          <div class="card-footer">
-            <small class="text-muted">Last updated 3 mins ago</small>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );
