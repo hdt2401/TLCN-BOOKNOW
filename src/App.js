@@ -30,8 +30,8 @@ function App() {
         <Route exact path="/profile" component={Profile} />
         <Route exact path="/user/changepassword" component={ChangePassword} />
         <Route exact path="/user/update" component={UpdateUser} />
-        <Route path="/carlist" component={CarList} />
-        <Route path="/cars/:id" component={CarDetails} />
+        <Route exact path="/carlist" component={CarList} />
+        <Route path="/carlist/:id" component={CarDetails} />
         <Route path="*" component={NotFound} />
       </Switch>
       {/* <Footer /> */}

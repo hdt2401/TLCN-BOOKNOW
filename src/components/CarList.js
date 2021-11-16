@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Link } from "react-router-dom";
 import CarService from "../services/car.service";
 
 function CarList(props) {
@@ -23,23 +25,34 @@ function CarList(props) {
   return (
     <div className="container">
       <h2>Danh sách nhà xe</h2>
-      <div class="card-group">
-        {cars.map((car, index) => (
-          <div class="card">
-            <img
-              class="card-img-top"
-              src="https://static.vexere.com/production/images/1589432483289.jpeg"
-              alt="Card image cap"
-            />
-            <div class="card-body">
-              <h5 class="card-title">{car.name}</h5>
-              <p class="card-text">{car.station}</p>
+      <div className="row">
+        <div class="card-group">
+          {cars.map((car, index) => (
+            <div className="card" key={index}>
+              <img
+                className="card-img-top"
+                src="https://static.vexere.com/production/images/1589432483289.jpeg"
+                alt={car.name}
+              />
+              <div className="card-body">
+                <h5 className="card-title">{car.name}</h5>
+                <p className="card-title">{car.station}</p>
+                <div className="row">
+                  <div className="col-8">
+                    <Link to={`/carlist/${car.id}`} className="btn btn-success">
+                      Details
+                    </Link>
+                  </div>
+                  <div className="col-4">
+                    <Link to={"/booking"} className="btn btn-primary">
+                      Booking
+                    </Link>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="card-footer">
-              <small class="text-muted">{car.capacity}</small>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
