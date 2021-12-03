@@ -1,17 +1,16 @@
-import '../style.css'
-import React, { useState } from 'react';
+import "../style.css";
+import React, { useState } from "react";
 import DatePicker from "react-multi-date-picker";
-import transition from "react-element-popper/animations/transition"
+import transition from "react-element-popper/animations/transition";
 import vi_VN from "./vi_VN";
-import Select from 'react-select';
+import Select from "react-select";
 
 function SearchTicket() {
   const options = [
-    { value: 'Bình Định', label: 'Bình Định' },
-    { value: 'Bình Dương', label: 'Bình Dương' },
-    { value: 'Tp Hồ Chí Minh', label: 'Tp Hồ Chí Minh' },
-    { value: 'Hà Nội', label: 'Hà Nội' },
-
+    { value: "Bình Định", label: "Bình Định" },
+    { value: "Bình Dương", label: "Bình Dương" },
+    { value: "Tp Hồ Chí Minh", label: "Tp Hồ Chí Minh" },
+    { value: "Hà Nội", label: "Hà Nội" },
   ];
   const styleDatePicker = {
     width: "100%",
@@ -19,10 +18,10 @@ function SearchTicket() {
     borderRadius: "4px",
     fontSize: "14px",
     textAlign: "center",
-  }
+  };
   const today = Date.now();
-  console.log(today)
-  const [datePicker, setDatePicker] = useState(new Date())
+  console.log(today);
+  const [datePicker, setDatePicker] = useState(new Date());
   function handleDatePicker(datePicker) {
     setDatePicker(datePicker);
   }
@@ -84,7 +83,7 @@ function SearchTicket() {
                 <label>Thời gian</label>
                 <DatePicker
                   containerStyle={{
-                    width: "100%"
+                    width: "100%",
                   }}
                   style={styleDatePicker}
                   value={datePicker}
@@ -98,15 +97,16 @@ function SearchTicket() {
             </div>
             <div className="col-md-3">
               <div className="form-option">
-                <button type="submit" className="btn-search button-submit">Tìm chuyến</button>
+                <button type="submit" className="btn-search button-submit">
+                  Tìm chuyến
+                </button>
               </div>
             </div>
           </div>
         </form>
       </div>
     </div>
-
-  )
+  );
 }
 
 export default SearchTicket;

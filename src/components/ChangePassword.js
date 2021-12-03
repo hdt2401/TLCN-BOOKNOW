@@ -1,66 +1,39 @@
 import React, { useState, useRef } from "react";
-import Form from "react-validation/build/form";
-import Input from "react-validation/build/input";
-import CheckButton from "react-validation/build/button";
+import { useForm } from "react-hook-form";
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
 
 import UserService from "../services/user.service";
 
-const required = (value) => {
-  if (!value) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        This field is required!
-      </div>
-    );
-  }
-};
 
-const vpassword = (value) => {
-  if (value.length < 6 || value.length > 40) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        The password must be between 6 and 40 characters.
-      </div>
-    );
-  }
-};
+function ChangePassword() {
 
-const ChangePassword = (props) => {
-  const initialCategoryState = {
-    oldPassword: "",
-    newPassword: "",
-  };
 
-  const form = useRef();
-  const checkBtn = useRef();
+  // form validation rules 
+  const validationSchema = Yup.object().shape({
+    oldPassword: Yup.string()
+        .min(6, 'oldPassword must be at least 6 characters')
+        .required('oldPassword is required'),
+    newPassword: Yup.string()
+        .min(6, 'newPassword must be at least 6 characters')
+        .required('newPassword is required'),
+    confirmPassword: Yup.string()
+        .oneOf([Yup.ref('newPassword'), null], 'Passwords must match')
+        .required('Confirm Password is required'),
+    });
+    const formOptions = { resolver: yupResolver(validationSchema) };
 
-  const [password, setPassword] = useState(initialCategoryState);
-  const [successful, setSuccessful] = useState(false);
-  const [message, setMessage] = useState("");
+    // get functions to build form with useForm() hook
+    const { register, handleSubmit, reset, formState } = useForm(formOptions);
+    const { errors } = formState;
+    const [successful, setSuccessful] = useState(false);
+    const [message, setMessage] = useState("");
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setPassword({ ...password, [name]: value });
-    console.log(password);
-  };
-
-  const handlePassword = (e) => {
-    e.preventDefault();
-
-    setMessage("");
-    setSuccessful(false);
-
-    form.current.validateAll();
-
-    if (checkBtn.current.context._errors.length === 0) {
-      var data = {
-        oldPassword: password.oldPassword,
-        newPassword: password.newPassword,
-      };
+    function onSubmit(data) {
       UserService.changePassword(data).then(
         (response) => {
-          setMessage(response.data.data);
-          setSuccessful(true);
+          setMessage("");
+          setSuccessful(false);
         },
         (error) => {
           const resMessage =
@@ -69,75 +42,46 @@ const ChangePassword = (props) => {
               error.response.data.message) ||
             error.message ||
             error.toString();
-
           setMessage(resMessage);
           setSuccessful(false);
         }
       );
     }
-  };
-
   return (
-    <div className="col-md-12">
-      <Form onSubmit={handlePassword} ref={form}>
-        {!successful && (
-          <div>
-            <div className="form-group">
-              <label htmlFor="oldPassword">Old Password</label>
-              <Input
-                type="password"
-                className="form-control"
-                name="oldPassword"
-                value={password.oldPassword}
-                onChange={handleInputChange}
-                validations={[required, vpassword]}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="newPassword">New Password</label>
-              <Input
-                type="password"
-                className="form-control"
-                name="newPassword"
-                value={password.newPassword}
-                onChange={handleInputChange}
-                validations={[required, vpassword]}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="password">Password</label>
-              <Input
-                type="password"
-                className="form-control"
-                name="password"
-                validations={[required, vpassword]}
-              />
-            </div>
-
-            <div className="form-group">
-              <button className="btn btn-primary btn-block">
-                Change Password
-              </button>
-            </div>
+    <div className="container">
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label htmlfor="oldPassword">Old Password</label>
+            <input name="oldPassword" type="password" {...register('oldPassword')} className={`form-control ${errors.oldPassword ? 'is-invalid' : ''}`} />
+            <div className="invalid-feedback">{errors.oldPassword?.message}</div>
           </div>
-        )}
-
-        {message && (
-          <div className="form-group">
-            <div
-              className={
-                successful ? "alert alert-success" : "alert alert-danger"
-              }
-              role="alert"
-            >
-              {message}
-            </div>
+          <div class="form-group col-md-6">
           </div>
-        )}
-        <CheckButton style={{ display: "none" }} ref={checkBtn} />
-      </Form>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label htmlfor="newPassword">New Password</label>
+            <input name="newPassword" type="password" {...register('newPassword')} className={`form-control ${errors.newPassword ? 'is-invalid' : ''}`} />
+            <div className="invalid-feedback">{errors.newPassword?.message}</div>
+          </div>
+          <div class="form-group col-md-6">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label htmlfor="confirmPassword">Confirm Password</label>
+            <input name="confirmPassword" type="password" {...register('confirmPassword')} className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`} />
+            <div className="invalid-feedback">{errors.confirmPassword?.message}</div>
+          </div>
+          <div class="form-group col-md-6">
+          </div>
+        </div>
+        
+        <button type="submit" className="btn btn-primary mr-1">Save</button>
+      </form>
     </div>
   );
-};
+}
 
 export default ChangePassword;

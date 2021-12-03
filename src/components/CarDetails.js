@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
 import ReactStars from "react-rating-stars-component";
-import Form from "react-validation/build/form";
-import Textarea from "react-validation/build/textarea";
-import Button from "react-validation/build/button";
 import { Link } from "react-router-dom";
 import CarService from "../services/car.service";
 import FeedbackService from "../services/feedback.service";
@@ -108,7 +105,7 @@ function CarDetails(props) {
                   />
                 </div>
                 <div className="col-4">
-                  <Link to={"/booking"} className="btn btn-primary">
+                  <Link to={`/booking/${car.id}`} className="btn btn-primary">
                     Booking
                   </Link>
                 </div>

@@ -52,7 +52,7 @@ function Header() {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link to={"/routes"} className="nav-link">
+                <Link to={"/lines"} className="nav-link">
                   Tuyến xe
                 </Link>
               </li>
@@ -62,16 +62,42 @@ function Header() {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link to={"/about"} className="nav-link">
-                  Về chúng tôi
+                <Link to={"/company"} className="nav-link">
+                  Trở Thành Đối Tác
                 </Link>
               </li>
               {currentUser ? (
                 <ul className="navbar-nav navbar-register">
                   <li className="nav-item">
-                    <Link to={"/login"} className="nav-link">
-                      {currentUser.username}
-                    </Link>
+                    <div class="dropdown">
+                      <button
+                        class="btn btn-primary dropdown-toggle"
+                        type="button"
+                        id="dropdownMenuButton"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                      >
+                        {currentUser.username}
+                      </button>
+                      <div
+                        class="dropdown-menu"
+                        aria-labelledby="dropdownMenuButton"
+                      >
+                        <Link to={"/profile"} className="dropdown-item">
+                          Your Profile
+                        </Link>
+                        <Link to={"/user/update"} className="dropdown-item">
+                          Eidt Profile
+                        </Link>
+                        <Link
+                          to={"/user/changepassword"}
+                          className="dropdown-item"
+                        >
+                          Change Password
+                        </Link>
+                      </div>
+                    </div>
                   </li>
                   <li className="nav-item">
                     <Link to={"/login"} className="nav-link" onClick={logOut}>

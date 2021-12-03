@@ -16,6 +16,9 @@ import CarList from "./components/CarList";
 import ChangePassword from "./components/ChangePassword";
 import UpdateUser from "./components/UpdateUser";
 import CarDetails from "./components/CarDetails";
+import Booking from "./components/Booking";
+import Lines from "./components/Lines";
+import Company from "./components/Company";
 
 function App() {
   return (
@@ -32,6 +35,10 @@ function App() {
         <Route exact path="/user/update" component={UpdateUser} />
         <Route exact path="/carlist" component={CarList} />
         <Route path="/carlist/:id" component={CarDetails} />
+
+        <Route exact path="/booking/:id" component={Booking} />
+        <Route exact path="/lines" component={Lines} />
+        <Route exact path="/company" component={Company} />
         <Route path="*" component={NotFound} />
       </Switch>
       {/* <Footer /> */}
