@@ -101,8 +101,8 @@ const Register = (props) => {
   };
 
   return (
-    <div className="col-md-12">
-      <div className="card card-container">
+    <div className="register-user">
+      <div className="card">
         <img
           src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
           alt="profile-img"
@@ -113,7 +113,7 @@ const Register = (props) => {
           {!successful && (
             <div>
               <div className="form-group">
-                <label htmlFor="username">Username</label>
+                <label htmlFor="username">Tên đăng nhập</label>
                 <Input
                   type="text"
                   className="form-control"
@@ -136,8 +136,8 @@ const Register = (props) => {
                 />
               </div>
 
-              <div className="form-group">
-                <label htmlFor="password">Password</label>
+              <div className="form-group mb-4">
+                <label htmlFor="password">Mật khẩu</label>
                 <Input
                   type="password"
                   className="form-control"
@@ -149,7 +149,7 @@ const Register = (props) => {
               </div>
 
               <div className="form-group">
-                <button className="btn btn-primary btn-block">Sign Up</button>
+                <button className="btn btn-primary btn-block">Đăng ký</button>
               </div>
             </div>
           )}

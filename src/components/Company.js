@@ -5,77 +5,77 @@ import * as Yup from 'yup';
 
 function Company(props) {
   // form validation rules 
-    const validationSchema = Yup.object().shape({
+  const validationSchema = Yup.object().shape({
     name: Yup.string()
-          .required('Name is required'),
+      .required('Name is required'),
     phone: Yup.string()
-          .required('Phone is required'),
+      .required('Phone is required'),
     email: Yup.string()
-          .required('Email is required')
-          .email('Email is invalid'),
+      .required('Email is required')
+      .email('Email is invalid'),
     address: Yup.string()
-          .required('Address is required'),
+      .required('Address is required'),
     image: Yup.string()
-          .required('Image is required'),
-    });   
-    const formOptions = { resolver: yupResolver(validationSchema) };
+      .required('Image is required'),
+  });
+  const formOptions = { resolver: yupResolver(validationSchema) };
 
-    // get functions to build form with useForm() hook
-    const { register, handleSubmit, reset, formState } = useForm(formOptions);
-    const { errors } = formState;
-    const [file, setFile] = useState();
-    const [fileName, setFileName] = useState();
+  // get functions to build form with useForm() hook
+  const { register, handleSubmit, reset, formState } = useForm(formOptions);
+  const { errors } = formState;
+  const [file, setFile] = useState();
+  const [fileName, setFileName] = useState();
 
-    const handleImageChange = (e) => {
-      console.log(e.target.files[0]);
-      setFile(e.target.files[0]);
-      setFileName(e.target.files[0].name);
-    };
+  const handleImageChange = (e) => {
+    console.log(e.target.files[0]);
+    setFile(e.target.files[0]);
+    setFileName(e.target.files[0].name);
+  };
 
 
-    function onSubmit(data) {
-      // display form data on success
-      alert('SUCCESS!! :-)\n\n' + JSON.stringify(data, null, 4));
-      return false;
-    }
+  function onSubmit(data) {
+    // display form data on success
+    alert('SUCCESS!! :-)\n\n' + JSON.stringify(data, null, 4));
+    return false;
+  }
   return (
-    <div className="container">
-      <div className="row">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <label htmlfor="name">Name</label>
-              <input name="name" type="text" {...register('name')} className={`form-control ${errors.name ? 'is-invalid' : ''}`} />
-              <div className="invalid-feedback">{errors.name?.message}</div>
-            </div>
-            <div class="form-group col-md-6">
-              <label htmlfor="phone">phone</label>
-              <input name="phone" type="text" {...register('phone')} className={`form-control ${errors.phone ? 'is-invalid' : ''}`} />
-              <div className="invalid-feedback">{errors.phone?.message}</div>
-            </div>
+    <div className="co-opration-company">
+      <div className="container">
+        <h1 className="heading-title text-center">Đăng ký trở thành đối tác</h1>
+        <div className="row justify-content-center">
+          <div className="col-md-6">
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div class="form-group">
+                <label htmlFor="company-name">Tên nhà xe</label>
+                <input id="company-name" type="text" {...register('name')} className={`form-control ${errors.name ? 'is-invalid' : ''}`} />
+                <div className="invalid-feedback">{errors.name?.message}</div>
+              </div>
+              <div class="form-group">
+                <label htmlFor="company-phone">Số điện thoại nhà xe</label>
+                <input id="company-phone" type="text" {...register('phone')} className={`form-control ${errors.phone ? 'is-invalid' : ''}`} />
+                <div className="invalid-feedback">{errors.phone?.message}</div>
+              </div>
+              <div class="form-group">
+                <label htmlFor="company-email">Email</label>
+                <input id="company-email" type="text" {...register('email')} className={`form-control ${errors.email ? 'is-invalid' : ''}`} />
+                <div className="invalid-feedback">{errors.email?.message}</div>
+              </div>
+              <div class="form-group">
+                <label htmlFor="company-address">Địa chỉ nhà xe</label>
+                <input id="company-address" type="text" {...register('address')} className={`form-control ${errors.address ? 'is-invalid' : ''}`} />
+                <div className="invalid-feedback">{errors.address?.message}</div>
+              </div>
+              <label htmlFor="company-image">Ảnh nhà xe</label>
+              <input
+                type="file"
+                class="form-control-file mb-4"
+                id="company-image"
+                onChange={handleImageChange}
+              />
+              <button type="submit" className="btn btn-primary"><i class="fas fa-paper-plane"></i> Gửi</button>
+            </form>
           </div>
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <label htmlfor="email">Email</label>
-              <input name="email" type="text" {...register('email')} className={`form-control ${errors.email ? 'is-invalid' : ''}`} />
-              <div className="invalid-feedback">{errors.email?.message}</div>
-            </div>
-            <div class="form-group col-md-6">
-              <label htmlfor="address">Address</label>
-              <input name="address" type="text" {...register('address')} className={`form-control ${errors.address ? 'is-invalid' : ''}`} />
-              <div className="invalid-feedback">{errors.address?.message}</div>
-            </div>
-          </div>
-          <label for="image">Compay Image</label>
-          <input
-            type="file"
-            class="form-control-file"
-            id="exampleFormControlFile1"
-            name="image"
-            onChange={handleImageChange}
-          />
-          <button type="submit" className="btn btn-primary mr-1">Save</button>
-        </form>
+        </div>
       </div>
     </div>
   );

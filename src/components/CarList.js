@@ -4,56 +4,94 @@ import { Link } from "react-router-dom";
 import CarService from "../services/car.service";
 
 function CarList(props) {
-  const [cars, setCars] = useState([]);
-  useEffect(() => {
-    retrieveCars();
-    console.log(cars);
-  }, []);
+  // const [cars, setCars] = useState([]);
+  // useEffect(() => {
+  //   retrieveCars();
+  //   console.log(cars);
+  // }, []);
 
-  const retrieveCars = () => {
-    CarService.getCarList()
-      .then((response) => {
-        //setCategories(response.data);
-        setCars(response.data.data.cars);
-        console.log(response.data.data.cars);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
+  // const retrieveCars = () => {
+  //   CarService.getCarList()
+  //     .then((response) => {
+  //       //setCategories(response.data);
+  //       setCars(response.data.data.cars);
+  //       console.log(response.data.data.cars);
+  //     })
+  //     .catch((e) => {
+  //       console.log(e);
+  //     });
+  // };
+
+  const cars = [
+    {
+      id: 1,
+      name: "Quang Minh",
+      capacity: 24
+    },
+    {
+      id: 2,
+      name: "Đức Tâm",
+      capacity: 36
+    },
+    {
+      id: 3,
+      name: "Ngọc Đức",
+      capacity: 16
+    },
+    {
+      id: 4,
+      name: "Trí Hà",
+      capacity: 24
+    },
+    {
+      id: 5,
+      name: "Chín Nghĩa",
+      capacity: 36
+    },
+    {
+      id: 6,
+      name: "Thiện Quyên",
+      capacity: 27
+    },
+
+  ]
 
   return (
-    <div className="container">
-      <h2>Danh sách nhà xe</h2>
-      <div className="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-        {cars.map((car, index) => (
-          <div className="col mb-5">
-            <div className="card h-100">
-              <img
-                className="card-img-top"
-                src="https://static.vexere.com/production/images/1589432483289.jpeg"
-                alt={car.name}
-              />
-              <div className="card-body p-4">
-                <div className="text-center">
-                  <h5 className="fw-bolder">{car.name}</h5>
-                  <p1>{car.capacity}</p1>
+    <div className="car-list">
+      <div className="container">
+        <h1 className="heading-title">Danh sách nhà xe</h1>
+        <div className="page-body">
+          <div className="row">
+            {cars.map((car, index) => (
+              <div key={index} className="col-lg-3 col-md-4 mb-5">
+                <div className="card">
+                  <img
+                    className="card-img-top"
+                    src="https://static.vexere.com/production/images/1589432483289.jpeg"
+                    alt={car.name}
+                  />
+                  <div className="card-body">
+                    <div className="text-center">
+                      <h2 className="car-name">{car.name}</h2>
+                      <p1>Số lượng ghế: {car.capacity}</p1>
+                    </div>
+                  </div>
+                  <div className="card-footer pb-4 border-top-0 bg-transparent">
+                    <div className="text-center">
+                      <Link to={`/booking/${car.id}`} className="btn btn-primary mr-2">
+                        Đặt ngay
+                      </Link>
+                      <Link to={`/carlist/${car.id}`} className="btn btn-success">
+                        Chi tiết
+                      </Link>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                <div className="text-center">
-                  <Link to={`/carlist/${car.id}`} className="btn btn-success">
-                    Details
-                  </Link>
-                  <Link to={`/booking/${car.id}`} className="btn btn-primary">
-                    Booking
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+            ))}
+          </div>        
+        </div>
+      </div>      
       {/* <div className="row">
         <div class="card-group">
           {cars.map((car, index) => (
