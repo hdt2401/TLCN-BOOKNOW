@@ -4,7 +4,6 @@ import DatePicker from "react-multi-date-picker";
 import transition from "react-element-popper/animations/transition";
 import vi_VN from "./vi_VN";
 import Select from "react-select";
-
 function SearchTicket() {
   const options = [
     { value: "Bình Định", label: "Bình Định" },
@@ -25,6 +24,7 @@ function SearchTicket() {
   function handleDatePicker(datePicker) {
     setDatePicker(datePicker);
   }
+
   console.log(datePicker);
   return (
     <div className="search">

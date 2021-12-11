@@ -1,6 +1,6 @@
 function ContactUs(){
     return (
-        <section id="contact">
+        <section className="contact">
 
         </section>
     );
