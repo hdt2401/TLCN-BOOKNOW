@@ -19,6 +19,10 @@ import CarDetails from "./components/CarDetails";
 import Booking from "./components/Booking";
 import Lines from "./components/Lines";
 import Company from "./components/Company";
+import Contact from "./components/Contact";
+import RouteCar from "./components/RouteCar";
+import SuccessPayment from "./components/SuccessPayment";
+import DenyPayment from "./components/DenyPayment";
 
 function App() {
   return (
@@ -38,10 +42,14 @@ function App() {
 
         <Route exact path="/booking/:id" component={Booking} />
         <Route exact path="/lines" component={Lines} />
+        <Route exact path="/lines/:id" component={RouteCar} />
         <Route exact path="/company" component={Company} />
+        <Route exact path="/contact" component={Contact} />
+        <Route exact path="/payment-success" component={SuccessPayment} />
+        <Route exact path="/payment-denied" component={DenyPayment} />
         <Route path="*" component={NotFound} />
       </Switch>
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 }

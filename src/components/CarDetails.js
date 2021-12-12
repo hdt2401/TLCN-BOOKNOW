@@ -12,12 +12,14 @@ function CarDetails(props) {
   const [feedback, setFeedback] = useState("");
   const [star, setStar] = useState(1);
   const [message, setMessage] = useState("");
+  const [schedules, setSchedules] = useState([]);
 
   const getCar = (id) => {
-    CarService.getCar(id)
+    CarService.getDetailCar(id)
       .then((response) => {
         setCar(response.data.data.car);
-        console.log(response.data.data.car);
+        setSchedules(response.data.data.car.schedules)
+        console.log(response.data.data.car.schedules);
       })
       .catch((e) => {
         console.log(e);
@@ -82,113 +84,155 @@ function CarDetails(props) {
       });
   };
   return (
-    <div className="container">
-      <h1>{car.name}</h1>
-      <div class="row">
-        <div class="col-sm-6">
-          <div className="card">
-            <img
-              className="card-img-top"
-              src="https://static.vexere.com/production/images/1589432483289.jpeg"
-              alt={car.name}
-            />
-            <div className="card-body">
-              <h5 className="card-title">{car.name}</h5>
-              <p className="card-title">{car.station}</p>
-              <div className="row">
-                <div className="col-8">
-                  <ReactStars
-                    count={5}
-                    value={4}
-                    size={24}
-                    activeColor="#ffd700"
-                  />
+    <div className="car-details">
+      <div className="container">
+        <h1 className="heading-title">Nhà xe {car.name}</h1>
+        <div className="car-desc mb-4">
+          <div className="row">
+            <div className="col-md-6">
+              <div className="card">
+                <img
+                  className="card-img-top"
+                  src="https://static.vexere.com/production/images/1589432483289.jpeg"
+                  alt={car.name} />
+                <div className="card-body">
+                  <div className="row justify-content-between">
+                    <div className="col-auto">
+                      <h2 className="card-title">Nhà xe {car.name}</h2>
+                      <p className="card-title">{car.station}</p><br/>
+                      <p className="card-title">{car.price} VND</p><br/>
+                      <ReactStars
+                        count={5}
+                        value={4}
+                        size={24}
+                        activeColor="#fb6e2e"
+                      />
+                    </div>
+                    <div className="col-auto">
+                      <Link to={`/booking/${car.id}`} className="btn btn-primary">
+                        Đặt ngay
+                      </Link>
+                    </div>
+                  </div>
                 </div>
-                <div className="col-4">
-                  <Link to={`/booking/${car.id}`} className="btn btn-primary">
-                    Booking
-                  </Link>
+              </div>
+            </div>
+            <div className="col-md-6">
+              <h2>Thông tin chi tiết về nhà xe</h2>
+              
+              {
+                schedules && schedules.map((item, index) => (
+                  <ul className="info-car-list p-0">
+                    <li className="info-car-item d-flex">
+                      <p className="info-title">Hành Trình:</p>
+                      <div className="info-content">{item.carroutes.starting_point}  -  {item.carroutes.destination}</div>
+                    </li>
+                    <li className="info-car-item d-flex">
+                      <p className="info-title">Thời gian:</p>
+                      <div className="info-content">{item.carroutes.departture_time}  -  {item.carroutes.arrival_time}</div>
+                    </li>
+                  </ul>
+                ))
+              }
+              <p>Số Ghế: {car.capacity}</p><br/>
+              <p>Giá Vé: {car.price}</p><br/>
+              <p>Biển Số: {car.plate_number}</p><br/>
+              <p>Bến Xe: {car.station}</p><br/>
+                {/* <li className="info-car-item d-flex">
+                  <p className="info-title">Tuyến:</p>
+                  <div className="info-content">{car.start} - {car.end}</div>
+                </li>
+                <li className="info-car-item d-flex">
+                  <p className="info-title">Số lượng ghế:</p>
+                  <div className="info-content">{car.capacity} ghế</div>
+                </li>
+                <li className="info-car-item d-flex">
+                  <p className="info-title">Khởi hành:</p>
+                  <div className="info-content">{car.time_start}</div>
+                </li>
+                <li className="info-car-item d-flex">
+                  <p className="info-title">Kết thúc:</p>
+                  <div className="info-content">{car.time_end}</div>
+                </li> */}
+             
+            </div>
+          </div>
+        </div>
+        <div className="car-feedbacks">
+          <div className="row">
+            <div className="col-md-6">
+              <div className="card">
+                <div class="card-header">Danh sách đánh giá</div>
+                <div className="card-body">
+                  <div className="list-group list-group-flush">
+                    {feedbacks ? (
+                      feedbacks.map((feedback, index) => (
+                        <a key={index} href="/" className="list-group-item list-group-item-action flex-column align-items-start">
+                          <p className="feedback-username">{feedback.feedbacks.username}</p>
+                          <ReactStars
+                            count={5}
+                            value={feedback.rating}
+                            size={18}
+                            activeColor="#fb6e2e"
+                          />
+                          <p className="feedback-content">{feedback.content}</p>
+                          <small className="feedback-time text-muted">{formatDate(feedback.createdAt)}</small>
+                        </a>
+                      ))
+                    ) : (
+                      <div> Chưa có đánh giá.</div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="card">
+                <div class="card-header">Đánh giá</div>
+                <div className="card-body">
+                  {(
+                    <form onSubmit={handleSubmit}>
+                      <div className="form-group">
+                        <label className="mb-0" for="feedbackContent">Mời bạn chia sẻ thêm một số cảm nhận ...</label>
+                        <ReactStars
+                          count={5}
+                          value={star}
+                          onChange={ratingChanged}
+                          size={24}
+                          activeColor="#fb6e2e"
+                        />
+                        <textarea
+                          className="form-control"
+                          id="feedbackContent"
+                          rows="3"
+                          name="content"
+                          value={feedback}
+                          onChange={handleInputChange}>
+                        </textarea>
+                      </div>
+                      <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Gửi</button>
+                    </form>
+                  )}
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-sm-6">
-          <h3>Description</h3>
-          <div>
-            <p>Route</p>
-            <p>Capacity</p>
-            <p>Start</p>
-            <p>Destination</p>
-          </div>
-        </div>
       </div>
-      <div className="row">
-        <div className="col-sm-6">
-          <h3>Rating List</h3>
-          <div className="list-group">
-            {feedbacks ? (
-              feedbacks.map((feedback, index) => (
-                <a
-                  key={index}
-                  href="/"
-                  className="list-group-item list-group-item-action flex-column align-items-start"
-                >
-                  <div className="d-flex w-100 justify-content-between">
-                    <h5 className="mb-1">{feedback.feedbacks.username}</h5>
-                    <small className="text-muted">3 days ago</small>
-                  </div>
-                  <ReactStars
-                    count={5}
-                    value={feedback.rating}
-                    size={24}
-                    activeColor="#ffd700"
-                  />
-                  <p className="mb-1">{feedback.content}</p>
-                </a>
-              ))
-            ) : (
-              <div> Chưa có đánh giá.</div>
-            )}
-          </div>
-        </div>
-        <div className="col-sm-6">
-          <h3>Rating</h3>
-          {currentUser ? (
-            <form onSubmit={handleSubmit}>
-              <div className="form-group">
-                <label for="exampleFormControlTextarea1">Rating</label>
-                <ReactStars
-                  count={5}
-                  value={star}
-                  onChange={ratingChanged}
-                  size={24}
-                  activeColor="#ffd700"
-                />
-                <textarea
-                  className="form-control"
-                  id="exampleFormControlTextarea1"
-                  rows="3"
-                  name="content"
-                  value={feedback}
-                  onChange={handleInputChange}
-                ></textarea>
-              </div>
-              <div className="form-group row">
-                <div className="col-sm">
-                  <button type="submit" class="btn btn-primary">
-                    Submit
-                  </button>
-                </div>
-              </div>
-            </form>
-          ) : (
-            <div>Vui lòng đăng nhập để đánh giá.</div>
-          )}
-        </div>
-      </div>
-    </div>
+    </div >
   );
 }
+
+const formatDate = (date) => {
+  var d = new Date(date),
+    month = "" + (d.getMonth() + 1),
+    day = "" + d.getDate(),
+    year = d.getFullYear();
+
+  if (month.length < 2) month = "0" + month;
+  if (day.length < 2) day = "0" + day;
+
+  return [year, month, day].join("-");
+};
 
 export default CarDetails;

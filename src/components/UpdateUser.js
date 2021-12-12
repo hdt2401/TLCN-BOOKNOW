@@ -27,8 +27,9 @@ function UpdateUser(props) {
 
     UserService.update(data)
       .then((response) => {
+        
         setSubmitted(true);
-        console.log(response.data);
+        alert("You have updated profile successfully!");
       })
       .catch((e) => {
         console.log(e);

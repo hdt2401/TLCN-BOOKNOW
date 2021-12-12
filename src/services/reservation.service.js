@@ -10,12 +10,19 @@ const API_URL = "http://localhost:8080/";
 // };
 
 const create = (id, data) => {
-  return axios.post(API_URL + `reservations/${id}`, data, {
+  return axios.post(API_URL + `payments/${id}`, data, {
     headers: authHeader(),
   });
 };
 
+const paypal = async (data) => {
+  return await axios.post(API_URL + 'payments/createpaypal', data, {
+    headers: authHeader(),
+  });
+}
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   create,
+  paypal
 };

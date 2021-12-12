@@ -1,28 +1,24 @@
 import React, { useState, useEffect } from "react";
 
 import CarService from "../services/car.service";
-import reservationService from "../services/reservation.service";
 
 function Booking(props) {
-
-  const initialBookingState = {
-    id: null,
-    fullname: "",
-    phone: "",
-    email: "",
-    quantity: 1,
-    amount: null,
+  const [car, setCar] = useState({
+    id: 1,
+    name: "Quang Minh",
+    capacity: 24,
+    station: "BX Miền Đông",
+    start: "Sài Gòn",
+    end: "Hà Nội",
+    time_start: "14:00",
+    time_end: "5:00"
   }
-  const [car, setCar] = useState({});
-  const [schedules, setSchedules] = useState([]);
-  const [book, setBook] = useState(initialBookingState);
-
+  );
   const getCar = (id) => {
-    CarService.getDetailCar(id)
+    CarService.getCar(id)
       .then((response) => {
         setCar(response.data.data.car);
         console.log(response.data.data.car);
-        setSchedules(response.data.data.car.schedules)
       })
       .catch((e) => {
         console.log(e);
@@ -30,43 +26,8 @@ function Booking(props) {
   };
   useEffect(() => {
     getCar(props.match.params.id);
+    console.log(props.match.params.id);
   }, [props.match.params.id]);
-
-  const handleInputChange = event => {
-    const { name, value } = event.target;
-    setBook({ ...book, [name]: value });
-  };
-
-  const handleSubmit = (e) => {
-    const temp = car.price;
-    e.preventDefault();
-    // setBook({ ...book, amount: temp});
-    // console.log(book);
-    // reservationService.create(props.match.params.id, book)
-    //   .then((response) => {
-    //     console.log("Created Successfully")
-    //     alert("Bạn đã đặt vé thành công!");
-    //     setBook(initialBookingState);
-    //   })
-    //   .catch((e) => {
-    //     console.log(e);
-    //   });
-  }
-  const handlePaypal = () => {
-    const temp = car.price;
-    setBook({ ...book, amount: temp})
-    console.log(book);
-    reservationService.paypal(book)
-      .then((response) => {
-        console.log(response.data);
-        window.location.href = response.data.data;
-        // alert("Bạn đã đặt vé thành công!");
-        // setBook(initialBookingState);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }
 
   return (
     <div className="booking-ticket">
@@ -105,7 +66,7 @@ function Booking(props) {
                   </li>
                   <li class="list-group-item pr-0 pl-0">
                     <div className="row justify-content-between">
-                      <div className="col-auto">Giá tiền: {car.price}</div>
+                      <div className="col-auto">Giá tiền:</div>
                       <div className="col-auto text-primary font-weight-bold"></div>
                     </div>
                   </li>
@@ -114,14 +75,13 @@ function Booking(props) {
             </div>
           </div>
           <div className="col-md-8">
-            <form onSubmit={handleSubmit}>
+            <form>
               <div class="form-group row">
-                <label for="fullname" class="col-sm-4 col-form-label">
+                <label for="name" class="col-sm-4 col-form-label">
                   Họ tên
                 </label>
                 <div class="col-sm-8">
-                  <input type="text" class="form-control" id="fullname" name="fullname" value={book.fullname}
-                        onChange={handleInputChange}/>
+                  <input type="text" class="form-control" id="name" />
                 </div>
               </div>
               <div class="form-group row">
@@ -129,8 +89,7 @@ function Booking(props) {
                   Số điện thoại
                 </label>
                 <div class="col-sm-8">
-                  <input type="text" class="form-control" id="phone" name="phone" value={book.phone}
-                        onChange={handleInputChange}/>
+                  <input type="text" class="form-control" id="phone" />
                 </div>
               </div>
               <div class="form-group row">
@@ -138,25 +97,23 @@ function Booking(props) {
                   Email
                 </label>
                 <div class="col-sm-8">
-                  <input type="email" class="form-control" id="email" name="email" value={book.email}
-                        onChange={handleInputChange}/>
+                  <input type="email" class="form-control" id="email" />
                 </div>
               </div>
               <div class="form-group row">
-                <label for="quantity" class="col-sm-4 col-form-label">
+                <label for="seat" class="col-sm-4 col-form-label">
                   Số ghế
                 </label>
                 <div class="col-sm-8">
-                  <input type="number" class="form-control" id="quantity" name="quantity" value={book.quantity}
-                        onChange={handleInputChange}/>
+                  <input type="number" class="form-control" id="seat" />
                 </div>
               </div>
               <div class="form-group row">
-                <label for="amount" class="col-sm-4 col-form-label">
-                  Tổng giá:
+                <label for="payment" class="col-sm-4 col-form-label">
+                  Thanh toán:
                 </label>
                 <div class="col-sm-8">
-                  <input disabled value={car.price} type="text" class="form-control" id="amount" name="amount" />
+                  <input type="text" class="form-control" id="payment" />
                 </div>
               </div>
               <div className="row">
@@ -164,7 +121,7 @@ function Booking(props) {
                   Hình thức thanh toán:
                 </label>
                 <div class="col-sm-8">
-                  <button className="btn btn-primary" onClick={handlePaypal}>
+                  <button className="btn btn-primary">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="16"
