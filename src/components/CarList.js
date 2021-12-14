@@ -41,11 +41,13 @@ function CarList(props) {
             {cars.map((car, index) => (
               <div key={index} className="col-lg-3 col-md-4 mb-5">
                 <div className="card">
-                  <img
-                    className="card-img-top"
-                    src="https://static.vexere.com/production/images/1589432483289.jpeg"
-                    alt={car.name}
-                  />
+                  <div className="carlist-img">
+                    <img
+                      className="card-img-top"
+                      src={car.image}
+                      alt={car.name}
+                    />
+                  </div>
                   <div className="card-body">
                     <div className="text-center">
                       <h2 className="car-name">{car.name}</h2>

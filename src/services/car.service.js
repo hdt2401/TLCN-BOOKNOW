@@ -20,10 +20,15 @@ const getDetailCar = (id) => {
     headers: authHeader(),
   });
 };
-
+const search = (start, des) => {
+  return axios.get(API_URL + `cars/car/search?start=${start}&destination=${des}`, {
+    headers: authHeader(),
+  });
+};
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   getCarList,
   getCar,
   getDetailCar,
+  search
 };

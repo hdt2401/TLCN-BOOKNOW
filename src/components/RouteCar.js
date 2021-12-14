@@ -30,7 +30,7 @@ function RouteCar() {
                 <div className="card">
                   <img
                     className="card-img-top"
-                    src="https://static.vexere.com/production/images/1589432483289.jpeg"
+                    src={car.schedules.image}
                     alt={car.schedules.name}
                   />
                   <div className="card-body">

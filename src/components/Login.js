@@ -68,8 +68,8 @@ const Login = (props) => {
   };
 
   return (
-    <div className="col-md-12">
-      <div className="card card-container">
+    <div className="login-user">
+      <div className="card">
         <img
           src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
           alt="profile-img"
@@ -77,8 +77,8 @@ const Login = (props) => {
         />
 
         <Form onSubmit={handleLogin} ref={form}>
-          <div className="form-group">
-            <label htmlFor="username">Username</label>
+          <div className="form-group input-username">
+            <label htmlFor="username">Tên đăng nhập</label>
             <Input
               type="text"
               className="form-control"
@@ -89,8 +89,8 @@ const Login = (props) => {
             />
           </div>
 
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
+          <div className="form-group input-password mb-4">
+            <label htmlFor="password">Mật khẩu</label>
             <Input
               type="password"
               className="form-control"
@@ -106,7 +106,7 @@ const Login = (props) => {
               {loading && (
                 <span className="spinner-border spinner-border-sm"></span>
               )}
-              <span>Login</span>
+              <span>Đăng nhập</span>
             </button>
           </div>
 

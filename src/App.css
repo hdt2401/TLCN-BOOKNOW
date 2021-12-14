@@ -94,6 +94,7 @@
   font-size:15px;
   line-height:24px;
   color:#737373;
+  margin-top: 50px;
 }
 .site-footer hr
 {
@@ -348,4 +349,18 @@ label {
 }
 .co-opration-company {
   margin-bottom: 32px;
+}
+
+.carlist-img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 185px;
+}
+
+.carlist-img img {
+  display: block;
+  max-width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

@@ -93,7 +93,7 @@ function CarDetails(props) {
               <div className="card">
                 <img
                   className="card-img-top"
-                  src="https://static.vexere.com/production/images/1589432483289.jpeg"
+                  src={car.image}
                   alt={car.name} />
                 <div className="card-body">
                   <div className="row justify-content-between">

@@ -32,10 +32,16 @@ function Booking(props) {
     getCar(props.match.params.id);
   }, [props.match.params.id]);
 
+  useEffect(() => {
+    
+  }, [schedules.routeId]);
+
   const handleInputChange = event => {
     const { name, value } = event.target;
     setBook({ ...book, [name]: value });
   };
+
+  
 
   const handleSubmit = (e) => {
     const temp = car.price;
@@ -75,41 +81,45 @@ function Booking(props) {
         <div className="row">
           <div className="col-md-4">
             <div className="card">
-              <img src="https://static.vexere.com/production/images/1589432483289.jpeg" class="card-img-top" alt="..." />
+              <img src={car.image} class="card-img-top" alt={car.name} />
               <div class="card-body">
                 <h5 class="card-title">Nhà xe {car.name}</h5>
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item pr-0 pl-0">
-                    <div className="row justify-content-between">
-                      <div className="col-auto">Tuyến xe đi từ:</div>
-                      <div className="col-auto text-primary font-weight-bold">{car.start}</div>
-                    </div>
-                  </li>
-                  <li class="list-group-item pr-0 pl-0">
-                    <div className="row justify-content-between">
-                      <div className="col-auto">Tuyến xe dừng tại:</div>
-                      <div className="col-auto text-primary font-weight-bold">{car.end}</div>
-                    </div>
-                  </li>
-                  <li class="list-group-item pr-0 pl-0">
-                    <div className="row justify-content-between">
-                      <div className="col-auto">Thời gian khởi hành:</div>
-                      <div className="col-auto text-primary font-weight-bold">{car.time_start}</div>
-                    </div>
-                  </li>
-                  <li class="list-group-item pr-0 pl-0">
-                    <div className="row justify-content-between">
-                      <div className="col-auto">Thời gian đến:</div>
-                      <div className="col-auto text-primary font-weight-bold">{car.time_end}</div>
-                    </div>
-                  </li>
-                  <li class="list-group-item pr-0 pl-0">
-                    <div className="row justify-content-between">
-                      <div className="col-auto">Giá tiền: {car.price}</div>
-                      <div className="col-auto text-primary font-weight-bold"></div>
-                    </div>
-                  </li>
-                </ul>
+                {
+                  schedules && schedules.map((item, index) => (
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item pr-0 pl-0">
+                        <div className="row justify-content-between">
+                          <div className="col-auto">Tuyến xe đi từ: </div>
+                          <div className="col-auto text-primary font-weight-bold">{item.carroutes.starting_point}</div>
+                        </div>
+                      </li>
+                      <li class="list-group-item pr-0 pl-0">
+                        <div className="row justify-content-between">
+                          <div className="col-auto">Tuyến xe dừng tại:</div>
+                          <div className="col-auto text-primary font-weight-bold">{item.carroutes.destination}</div>
+                        </div>
+                      </li>
+                      <li class="list-group-item pr-0 pl-0">
+                        <div className="row justify-content-between">
+                          <div className="col-auto">Thời gian khởi hành:</div>
+                          <div className="col-auto text-primary font-weight-bold">{item.carroutes.departture_time}</div>
+                        </div>
+                      </li>
+                      <li class="list-group-item pr-0 pl-0">
+                        <div className="row justify-content-between">
+                          <div className="col-auto">Thời gian đến:</div>
+                          <div className="col-auto text-primary font-weight-bold">{item.carroutes.arrival_time}</div>
+                        </div>
+                      </li>
+                      <li class="list-group-item pr-0 pl-0">
+                        <div className="row justify-content-between">
+                          <div className="col-auto">Giá tiền: {car.price}</div>
+                          <div className="col-auto text-primary font-weight-bold"></div>
+                        </div>
+                      </li>
+                    </ul>
+                  )) 
+                }
               </div>
             </div>
           </div>
