@@ -4,10 +4,33 @@ import { Link } from "react-router-dom";
 import CarService from "../services/car.service";
 import FeedbackService from "../services/feedback.service";
 import AuthService from "../services/auth.service";
+import "bootstrap/dist/css/bootstrap.min.css"
+import "bootstrap/dist/js/bootstrap.bundle.js"
 
 function CarDetails(props) {
   const [car, setCar] = useState(
-    { id: 1, name: "Quang Minh", capacity: 24, station: "BX Miền Đông", start:"Sài Gòn", end: "Hà Nội", time_start:"14:00", time_end:"5:00" }
+    {
+      id: 1, name: "Quang Minh",
+      capacity: 24, station: "BX Miền Đông",
+      start: "Sài Gòn", end: "Hà Nội",
+      time_start: "14:00",
+      time_end: "5:00",
+      images: [
+        {
+          src: "https://lh3.googleusercontent.com/proxy/_3yRLSjLYlRFznqGpKGpcfSgcbQ2zqG3V5W77Twud3ntZhW9a-xTifwrvqTjv73YF9HmZ7bGLwo86lweO7TMh15vXgZ_UFG7m-X7cjqvfuvGshmb6SFjprL3jUjnWH8hTuaacVSfDgA0ZlEdaI7JODcpCKQ5vo6VLbijsM1SikzL2GXHGw",
+          alt: "a"
+        },
+        {
+          src: "https://lh3.googleusercontent.com/proxy/UTawm2QjtON521c1CqQ9f7RnWu1jp-qCYUxKuQqWNqbTcROXXDDNVX5qxkcIJwngSmPSsuNwdj5jB3ibQ4PIT5AD1PgiaCBTJ7hQZmYs68bcijTCjG02dBUQAeRDo1HdIAQjFym9W12JzpexY-ok-nORt9II4cGPCWPpAxd_oDlbu2T2lLt_",
+          alt: "b"
+        },
+        {
+          src:"https://storage.googleapis.com/blogvxr-uploads/2018/10/xe-dung-tien1-VeXeRe-bSfyo2a-1000x600-752x440.jpg",
+          alt: "c"
+        }
+      ]
+
+    }
   );
   const [feedbacks, setFeedbacks] = useState([
     {
@@ -123,10 +146,28 @@ function CarDetails(props) {
           <div className="row">
             <div className="col-md-6">
               <div className="card">
-                <img
-                  className="card-img-top"
-                  src="https://static.vexere.com/production/images/1589432483289.jpeg"
-                  alt={car.name} />
+                <div id="demo" class="carousel slide" data-bs-ride="carousel">
+                  <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+                    <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+                    <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+                  </div>
+                  <div class="carousel-inner">
+                    {car.images.map((image, index) => (
+                      <img
+                        key={index}
+                        className={index==1 ? "carousel-item active" : "carousel-item"}
+                        src={image.src}
+                        alt={image.alt} />
+                    ))}
+                  </div>
+                  <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                  </button>
+                  <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                  </button>
+                </div>
                 <div className="card-body">
                   <div className="row justify-content-between">
                     <div className="col-auto">

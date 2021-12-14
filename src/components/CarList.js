@@ -26,34 +26,21 @@ function CarList(props) {
     {
       id: 1,
       name: "Quang Minh",
-      capacity: 24
+      capacity: 24,
+      img: "https://firebasestorage.googleapis.com/v0/b/vexere-image.appspot.com/o/cars%2Fxe5.jpeg?alt=media&token=9d86741c-24d3-4694-a068-1a0747879cf2&fbclid=IwAR0mQRy6yp9khPIrAW_CAgqjGsD5DGoBT-AybSDLstyxH3Pm2VGUWR5o3-0"
     },
     {
       id: 2,
       name: "Đức Tâm",
-      capacity: 36
+      capacity: 36,
+      img: "https://firebasestorage.googleapis.com/v0/b/vexere-image.appspot.com/o/cars%2Fxe6.jpeg?alt=media&token=2a68ec0e-df3d-45d6-aa49-9b194d8a6d10&fbclid=IwAR3cK9jj6g6sODs3iFvrQB5UPbjzgzqsFhdC2nVyOYYJNhTgS5eHsm2e0Yo"
     },
     {
       id: 3,
-      name: "Ngọc Đức",
-      capacity: 16
+      name: "Đức Tâm",
+      capacity: 36,
+      img: "https://firebasestorage.googleapis.com/v0/b/vexere-image.appspot.com/o/cars%2Fxe3.jpeg?alt=media&token=064dc863-1f56-4eb9-ac97-ca015be2ef25&fbclid=IwAR1iaunESF8lKGXGLVMYSIFtNFgc3UtfjbypnX5xN9fgoC4lkaxVDQ0KtdI"
     },
-    {
-      id: 4,
-      name: "Trí Hà",
-      capacity: 24
-    },
-    {
-      id: 5,
-      name: "Chín Nghĩa",
-      capacity: 36
-    },
-    {
-      id: 6,
-      name: "Thiện Quyên",
-      capacity: 27
-    },
-
   ]
 
   return (
@@ -65,11 +52,13 @@ function CarList(props) {
             {cars.map((car, index) => (
               <div key={index} className="col-lg-3 col-md-4 mb-5">
                 <div className="card">
-                  <img
-                    className="card-img-top"
-                    src="https://static.vexere.com/production/images/1589432483289.jpeg"
-                    alt={car.name}
-                  />
+                  <div className="carlist-img">
+                    <img
+                      className="card-img-top"
+                      src={car.img}
+                      alt={car.name}
+                    />
+                  </div>
                   <div className="card-body">
                     <div className="text-center">
                       <h2 className="car-name">{car.name}</h2>
@@ -89,9 +78,9 @@ function CarList(props) {
                 </div>
               </div>
             ))}
-          </div>        
+          </div>
         </div>
-      </div>      
+      </div>
       {/* <div className="row">
         <div class="card-group">
           {cars.map((car, index) => (
