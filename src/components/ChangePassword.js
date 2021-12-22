@@ -34,6 +34,8 @@ function ChangePassword() {
         (response) => {
           setMessage("");
           setSuccessful(false);
+          alert("Update Password Sucessfully.");
+          reset();
         },
         (error) => {
           const resMessage =
@@ -48,39 +50,68 @@ function ChangePassword() {
       );
     }
   return (
-    <div className="container">
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div class="form-row">
-          <div class="form-group col-md-6">
-            <label htmlfor="oldPassword">Old Password</label>
-            <input name="oldPassword" type="password" {...register('oldPassword')} className={`form-control ${errors.oldPassword ? 'is-invalid' : ''}`} />
-            <div className="invalid-feedback">{errors.oldPassword?.message}</div>
-          </div>
-          <div class="form-group col-md-6">
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group col-md-6">
-            <label htmlfor="newPassword">New Password</label>
-            <input name="newPassword" type="password" {...register('newPassword')} className={`form-control ${errors.newPassword ? 'is-invalid' : ''}`} />
-            <div className="invalid-feedback">{errors.newPassword?.message}</div>
-          </div>
-          <div class="form-group col-md-6">
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group col-md-6">
-            <label htmlfor="confirmPassword">Confirm Password</label>
-            <input name="confirmPassword" type="password" {...register('confirmPassword')} className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`} />
-            <div className="invalid-feedback">{errors.confirmPassword?.message}</div>
-          </div>
-          <div class="form-group col-md-6">
+    <div className="co-opration-company">
+      <div className="container">
+        <div>
+          <h1 className="heading-title text-center">Thay Đổi Mật Khẩu</h1>
+          <div className="row justify-content-center">
+            <div className="col-md-6">
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <div class="form-group">
+                  <label htmlfor="oldPassword">Old Password</label>
+                  <input name="oldPassword" type="password" {...register('oldPassword')} className={`form-control ${errors.oldPassword ? 'is-invalid' : ''}`} />
+                  <div className="invalid-feedback">{errors.oldPassword?.message}</div>
+                </div>
+                <div class="form-group">
+                  <label htmlfor="newPassword">New Password</label>
+                  <input name="newPassword" type="password" {...register('newPassword')} className={`form-control ${errors.newPassword ? 'is-invalid' : ''}`} />
+                  <div className="invalid-feedback">{errors.newPassword?.message}</div>
+                </div>
+                <div class="form-group">
+                  <label htmlfor="confirmPassword">Confirm Password</label>
+                  <input name="confirmPassword" type="password" {...register('confirmPassword')} className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`} />
+                  <div className="invalid-feedback">{errors.confirmPassword?.message}</div>
+                </div>
+                <button type="submit" className="btn btn-primary"><i class="fas fa-paper-plane"></i> Gửi</button>
+              </form>
+            </div>
           </div>
         </div>
-        
-        <button type="submit" className="btn btn-primary mr-1">Save</button>
-      </form>
+      </div>
     </div>
+    // <div className="container">
+    //   <form onSubmit={handleSubmit(onSubmit)}>
+    //     <div class="form-row">
+    //       <div class="form-group col-md-6">
+    //         <label htmlfor="oldPassword">Old Password</label>
+    //         <input name="oldPassword" type="password" {...register('oldPassword')} className={`form-control ${errors.oldPassword ? 'is-invalid' : ''}`} />
+    //         <div className="invalid-feedback">{errors.oldPassword?.message}</div>
+    //       </div>
+    //       <div class="form-group col-md-6">
+    //       </div>
+    //     </div>
+    //     <div class="form-row">
+    //       <div class="form-group col-md-6">
+    //         <label htmlfor="newPassword">New Password</label>
+    //         <input name="newPassword" type="password" {...register('newPassword')} className={`form-control ${errors.newPassword ? 'is-invalid' : ''}`} />
+    //         <div className="invalid-feedback">{errors.newPassword?.message}</div>
+    //       </div>
+    //       <div class="form-group col-md-6">
+    //       </div>
+    //     </div>
+    //     <div class="form-row">
+    //       <div class="form-group col-md-6">
+    //         <label htmlfor="confirmPassword">Confirm Password</label>
+    //         <input name="confirmPassword" type="password" {...register('confirmPassword')} className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`} />
+    //         <div className="invalid-feedback">{errors.confirmPassword?.message}</div>
+    //       </div>
+    //       <div class="form-group col-md-6">
+    //       </div>
+    //     </div>
+        
+    //     <button type="submit" className="btn btn-primary mr-1">Save</button>
+    //   </form>
+    // </div>
   );
 }
 

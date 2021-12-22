@@ -13,20 +13,23 @@ function Search(props) {
             <div class="row no-gutters">
               <div class="col-md-4">
                 <img
-                  src="https://static.vexere.com/production/images/1589432483289.jpeg"
+                  src={item.lines.image}
                   class="card-img"
-                  alt="..."
+                  alt={item.lines.name}
                 />
               </div>
               <div class="col-md-8">
                 <div class="card-body">
                   <h5 class="card-title">
-                    Tuyến: {item.starting_point} - {item.destination}
+                    Nhà Xe {item.lines.name}
                   </h5>
                   <p class="card-text">
-                    Thời gian: {item.departture_time} - {item.arrival_time}
+                    Xuất Phát: {item.lines.station} - {item.lines.station_to}
                   </p>
-                  <Link to={`lines/${item.id}`}>
+                  <p class="card-text">
+                    Thời gian: {item.departure_time} - {item.arrival_time}
+                  </p>
+                  <Link to={`lines/${item.lines.id}`}>
                     <button className="btn btn-primary">Xem Chi Tiết</button>
                   </Link>
                 </div>

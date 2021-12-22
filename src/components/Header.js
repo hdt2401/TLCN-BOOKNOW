@@ -85,16 +85,22 @@ function Header() {
                         aria-labelledby="dropdownMenuButton"
                       >
                         <Link to={"/profile"} className="dropdown-item">
-                          Your Profile
+                          Xem thông tin cá nhân
                         </Link>
                         <Link to={"/user/update"} className="dropdown-item">
-                          Eidt Profile
+                          Cập nhật thông tin cá nhân
                         </Link>
                         <Link
                           to={"/user/changepassword"}
                           className="dropdown-item"
                         >
-                          Change Password
+                          Thay đổi mật khẩu
+                        </Link>
+                        <Link
+                          to={`/booking-history/${currentUser.id}`}
+                          className="dropdown-item"
+                        >
+                          Lịch sử đặt vé
                         </Link>
                       </div>
                     </div>

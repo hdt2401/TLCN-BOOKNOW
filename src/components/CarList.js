@@ -51,6 +51,10 @@ function CarList(props) {
                   <div className="card-body">
                     <div className="text-center">
                       <h2 className="car-name">{car.name}</h2>
+                      <p1>Xuất Phát: {car.lines.start}</p1><br/>
+                      <p1>Nơi Đến: {car.lines.destination}</p1><br/>
+                      <p1>Giờ Đi: {car.lines.departure_time}</p1><br/>
+                      <p1>Giờ Đến: {car.lines.arrival_time}</p1><br/>
                       <p1>Số lượng ghế: {car.capacity}</p1><br/>
                       <p1>Bến Xe: {car.station}</p1><br/>
                       <p1>Giá: {car.price} VND</p1>

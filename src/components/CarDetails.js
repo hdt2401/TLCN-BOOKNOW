@@ -15,11 +15,12 @@ function CarDetails(props) {
   const [schedules, setSchedules] = useState([]);
 
   const getCar = (id) => {
-    CarService.getDetailCar(id)
+    CarService.getCar(id)
       .then((response) => {
         setCar(response.data.data.car);
-        setSchedules(response.data.data.car.schedules)
-        console.log(response.data.data.car.schedules);
+        console.log(car);
+        // setSchedules(response.data.data.car.schedules)
+        // console.log(response.data.data.car.schedules);
       })
       .catch((e) => {
         console.log(e);
@@ -31,18 +32,18 @@ function CarDetails(props) {
     FeedbackService.getFeedbacks(id)
       .then((response) => {
         setFeedbacks(response.data.data.feedback.feedbacks);
-        console.log(response.data.data.feedback.feedbacks);
+        //console.log(response.data.data.feedback.feedbacks);
       })
       .catch((e) => {
         console.log(e);
       });
   };
-  console.log(feedbacks.feedbacks);
+  //console.log(feedbacks.feedbacks);
 
   useEffect(() => {
     getCar(props.match.params.id);
     getFeedbacks(props.match.params.id);
-    console.log(props.match.params.id);
+    //console.log(props.match.params.id);
   }, [props.match.params.id]);
 
   useEffect(() => {
@@ -51,16 +52,16 @@ function CarDetails(props) {
     if (user) {
       setCurrentUser(user);
     }
-    console.log(user);
+    //console.log(user);
   }, []);
   const ratingChanged = (newRating) => {
     setStar(newRating);
-    console.log(newRating);
+    //console.log(newRating);
   };
   const handleInputChange = (e) => {
     const content = e.target.value;
     setFeedback(content);
-    console.log(feedback);
+    //console.log(feedback);
   };
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -72,12 +73,12 @@ function CarDetails(props) {
     console.log(data);
     FeedbackService.create(id, data)
       .then((response) => {
-        setMessage("ok");
+        //setMessage("ok");
         console.log(response.data);
         setStar(1);
-        setFeedback("");
+        //setFeedback("");
         getFeedbacks(props.match.params.id);
-        console.log("Create ok");
+        //console.log("Create ok");
       })
       .catch((e) => {
         console.log(e);
@@ -112,6 +113,9 @@ function CarDetails(props) {
                       <Link to={`/booking/${car.id}`} className="btn btn-primary">
                         Đặt ngay
                       </Link>
+                      <Link to={`/booking/${car.id}`} className="btn btn-warning">
+                        Chọn Tuyến
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -120,7 +124,7 @@ function CarDetails(props) {
             <div className="col-md-6">
               <h2>Thông tin chi tiết về nhà xe</h2>
               
-              {
+              {/* {
                 schedules && schedules.map((item, index) => (
                   <ul className="info-car-list p-0">
                     <li className="info-car-item d-flex">
@@ -133,7 +137,7 @@ function CarDetails(props) {
                     </li>
                   </ul>
                 ))
-              }
+              } */}
               <p>Số Ghế: {car.capacity}</p><br/>
               <p>Giá Vé: {car.price}</p><br/>
               <p>Biển Số: {car.plate_number}</p><br/>

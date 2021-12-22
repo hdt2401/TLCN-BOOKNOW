@@ -26,7 +26,7 @@ function Company(props) {
     const { register, handleSubmit, reset, formState } = useForm(formOptions);
     const { errors } = formState;
     const [file, setFile] = useState();
-    //const [fileName, setFileName] = useState();
+    const [submited, setSubmited] = useState(false);
 
     const handleImageChange = (e) => {
       console.log(e.target.files[0]);
@@ -53,6 +53,7 @@ function Company(props) {
                         console.log(data);
                         companyService.create(data)
                         .then((response) => {
+                          setSubmited(true);
                           console.log(response.data);
                         })
                         .catch((error) => {
@@ -76,41 +77,47 @@ function Company(props) {
   return (
     <div className="co-opration-company">
       <div className="container">
-        <h1 className="heading-title text-center">Đăng ký trở thành đối tác</h1>
-        <div className="row justify-content-center">
-          <div className="col-md-6">
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <div class="form-group">
-                <label htmlFor="company-name">Tên nhà xe</label>
-                <input id="company-name" type="text" {...register('name')} className={`form-control ${errors.name ? 'is-invalid' : ''}`} />
-                <div className="invalid-feedback">{errors.name?.message}</div>
+        {
+          submited ? (<div>Yêu cầu của bạn đã được gửi đi, chờ xét duyện.</div>) : (
+            <div>
+              <h1 className="heading-title text-center">Đăng ký trở thành đối tác</h1>
+              <div className="row justify-content-center">
+                <div className="col-md-6">
+                  <form onSubmit={handleSubmit(onSubmit)}>
+                    <div class="form-group">
+                      <label htmlFor="company-name">Tên nhà xe</label>
+                      <input id="company-name" type="text" {...register('name')} className={`form-control ${errors.name ? 'is-invalid' : ''}`} />
+                      <div className="invalid-feedback">{errors.name?.message}</div>
+                    </div>
+                    <div class="form-group">
+                      <label htmlFor="company-phone">Số điện thoại nhà xe</label>
+                      <input id="company-phone" type="text" {...register('phone')} className={`form-control ${errors.phone ? 'is-invalid' : ''}`} />
+                      <div className="invalid-feedback">{errors.phone?.message}</div>
+                    </div>
+                    <div class="form-group">
+                      <label htmlFor="company-email">Email</label>
+                      <input id="company-email" type="text" {...register('email')} className={`form-control ${errors.email ? 'is-invalid' : ''}`} />
+                      <div className="invalid-feedback">{errors.email?.message}</div>
+                    </div>
+                    <div class="form-group">
+                      <label htmlFor="company-address">Địa chỉ nhà xe</label>
+                      <input id="company-address" type="text" {...register('address')} className={`form-control ${errors.address ? 'is-invalid' : ''}`} />
+                      <div className="invalid-feedback">{errors.address?.message}</div>
+                    </div>
+                    <label htmlFor="company-image">Ảnh nhà xe</label>
+                    <input
+                      type="file"
+                      class="form-control-file mb-4"
+                      id="company-image"
+                      onChange={handleImageChange}
+                    />
+                    <button type="submit" className="btn btn-primary"><i class="fas fa-paper-plane"></i> Gửi</button>
+                  </form>
+                </div>
               </div>
-              <div class="form-group">
-                <label htmlFor="company-phone">Số điện thoại nhà xe</label>
-                <input id="company-phone" type="text" {...register('phone')} className={`form-control ${errors.phone ? 'is-invalid' : ''}`} />
-                <div className="invalid-feedback">{errors.phone?.message}</div>
-              </div>
-              <div class="form-group">
-                <label htmlFor="company-email">Email</label>
-                <input id="company-email" type="text" {...register('email')} className={`form-control ${errors.email ? 'is-invalid' : ''}`} />
-                <div className="invalid-feedback">{errors.email?.message}</div>
-              </div>
-              <div class="form-group">
-                <label htmlFor="company-address">Địa chỉ nhà xe</label>
-                <input id="company-address" type="text" {...register('address')} className={`form-control ${errors.address ? 'is-invalid' : ''}`} />
-                <div className="invalid-feedback">{errors.address?.message}</div>
-              </div>
-              <label htmlFor="company-image">Ảnh nhà xe</label>
-              <input
-                type="file"
-                class="form-control-file mb-4"
-                id="company-image"
-                onChange={handleImageChange}
-              />
-              <button type="submit" className="btn btn-primary"><i class="fas fa-paper-plane"></i> Gửi</button>
-            </form>
-          </div>
-        </div>
+            </div>
+          )
+        }
       </div>
     </div>
   );

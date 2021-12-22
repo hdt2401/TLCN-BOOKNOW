@@ -23,6 +23,9 @@ import Contact from "./components/Contact";
 import RouteCar from "./components/RouteCar";
 import SuccessPayment from "./components/SuccessPayment";
 import DenyPayment from "./components/DenyPayment";
+import BookingHistory from "./components/BookingHistory";
+import ResultTicket from "./components/ResultTicket";
+import TicketBooking from "./components/TicketBooking";
 
 function App() {
   return (
@@ -41,12 +44,15 @@ function App() {
         <Route path="/carlist/:id" component={CarDetails} />
 
         <Route exact path="/booking/:id" component={Booking} />
+        <Route exact path="/booking-history/:id" component={BookingHistory} />
         <Route exact path="/lines" component={Lines} />
         <Route exact path="/lines/:id" component={RouteCar} />
         <Route exact path="/company" component={Company} />
         <Route exact path="/contact" component={Contact} />
         <Route exact path="/payment-success" component={SuccessPayment} />
         <Route exact path="/payment-denied" component={DenyPayment} />
+        <Route exact path="/resultticket" component={ResultTicket} />
+        <Route exact path="/ticketbooking/:id" component={TicketBooking} />
         <Route path="*" component={NotFound} />
       </Switch>
       <Footer />

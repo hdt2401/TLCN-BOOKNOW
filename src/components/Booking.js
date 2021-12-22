@@ -48,15 +48,15 @@ function Booking(props) {
     e.preventDefault();
     // setBook({ ...book, amount: temp});
     // console.log(book);
-    // reservationService.create(props.match.params.id, book)
-    //   .then((response) => {
-    //     console.log("Created Successfully")
-    //     alert("Bạn đã đặt vé thành công!");
-    //     setBook(initialBookingState);
-    //   })
-    //   .catch((e) => {
-    //     console.log(e);
-    //   });
+    reservationService.create(props.match.params.id, book)
+      .then((response) => {
+        console.log("Created Successfully")
+        alert("Bạn đã đặt vé thành công!");
+        setBook(initialBookingState);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   }
   const handlePaypal = () => {
     const temp = car.price;
@@ -64,6 +64,18 @@ function Booking(props) {
     console.log(book);
     reservationService.paypal(book)
       .then((response) => {
+        reservationService.create(book)
+          .then((response) => {
+            console.log("Created Successfully")
+            alert("Bạn đã đặt vé thành công!");
+            setBook(initialBookingState);
+            
+            console.log(response.data);
+            window.location.href = response.data.data;
+          })
+          .catch((e) => {
+            console.log(e);
+          });
         console.log(response.data);
         window.location.href = response.data.data;
         // alert("Bạn đã đặt vé thành công!");
