@@ -25,10 +25,16 @@ const search = (start, des) => {
     headers: authHeader(),
   });
 };
+const searchFilter = (start, des, price) => {
+  return axios.get(API_URL + `cars/car/search?start=${start}&destination=${des}&price=${price}`, {
+    headers: authHeader(),
+  });
+};
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   getCarList,
   getCar,
   getDetailCar,
-  search
+  search,
+  searchFilter
 };

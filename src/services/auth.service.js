@@ -39,6 +39,14 @@ const verifyUser = (code) => {
   });
 };
 
+const forgot = (data) => {
+  return axios.post(API_URL + "forgot", data);
+};
+
+const reset = (code, data) => {
+  return axios.post(API_URL + `reset/${code}`, data);
+};
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   register,
@@ -46,4 +54,6 @@ export default {
   logout,
   getCurrentUser,
   verifyUser,
+  forgot,
+  reset
 };

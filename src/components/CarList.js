@@ -53,18 +53,18 @@ function CarList(props) {
                       <h2 className="car-name">{car.name}</h2>
                       <p1>Xuất Phát: {car.lines.start}</p1><br/>
                       <p1>Nơi Đến: {car.lines.destination}</p1><br/>
-                      <p1>Giờ Đi: {car.lines.departure_time}</p1><br/>
+                      {/* <p1>Giờ Đi: {car.lines.departure_time}</p1><br/>
                       <p1>Giờ Đến: {car.lines.arrival_time}</p1><br/>
                       <p1>Số lượng ghế: {car.capacity}</p1><br/>
                       <p1>Bến Xe: {car.station}</p1><br/>
-                      <p1>Giá: {car.price} VND</p1>
+                      <p1>Giá: {car.price} VND</p1> */}
                     </div>
                   </div>
                   <div className="card-footer pb-4 border-top-0 bg-transparent">
                     <div className="text-center">
-                      <Link to={`/booking/${car.id}`} className="btn btn-primary mr-2">
+                      {/* <Link to={`/booking/${car.id}`} className="btn btn-primary mr-2">
                         Đặt ngay
-                      </Link>
+                      </Link> */}
                       <Link to={`/carlist/${car.id}`} className="btn btn-success">
                         Chi tiết
                       </Link>

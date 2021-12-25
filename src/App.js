@@ -26,6 +26,8 @@ import DenyPayment from "./components/DenyPayment";
 import BookingHistory from "./components/BookingHistory";
 import ResultTicket from "./components/ResultTicket";
 import TicketBooking from "./components/TicketBooking";
+import ForgetPassword from "./components/Forget/ForgetPassword";
+import NewPassword from "./components/Forget/NewPassword";
 
 function App() {
   return (
@@ -53,6 +55,8 @@ function App() {
         <Route exact path="/payment-denied" component={DenyPayment} />
         <Route exact path="/resultticket" component={ResultTicket} />
         <Route exact path="/ticketbooking/:id" component={TicketBooking} />
+        <Route path="/forgot" component={ForgetPassword} />
+        <Route path="/reset/:confirmationCode" component={NewPassword} />
         <Route path="*" component={NotFound} />
       </Switch>
       <Footer />

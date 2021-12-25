@@ -3,15 +3,89 @@ import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import carService from "../services/car.service";
 import { useParams } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
+import reservationService from "../services/reservation.service";
 
 function TicketBooking() {
+
+  // form validation rules 
+  const validationSchema = Yup.object().shape({
+    fullname: Yup.string()
+        .required('Title is required'),
+    phone: Yup.string()
+        .required('First Name is required'),
+    cccd: Yup.string()
+        .required('Last name is required'),
+    pickup_place: Yup.string()
+        .required('Last name is required'),
+    dropoff_place: Yup.string()
+        .required('Last name is required'),
+    email: Yup.string()
+        .required('Email is required')
+        .email('Email is invalid'),
+    acceptPaypal: Yup.bool()
+        .oneOf([true], 'Accept Ts & Cs is required')
+  });
+  const formOptions = { resolver: yupResolver(validationSchema) };
+
+  // get functions to build form with useForm() hook
+  const { register, handleSubmit, reset, formState } = useForm(formOptions);
+  const { errors } = formState;
+  const [car, setCar] = useState();
+  const [amount, setAmout] = useState(0);
+
+  function onSubmit(data) {
+    // const newData = new FormData();
+    // newData.append("amount", amount);
+    // newData.append("carId", car.id);
+    // newData.append("quantity", data.quantity);
+    // newData.append("fullname", data.fullname);
+    // newData.append("phone", data.phone);
+    // newData.append("email", data.email);
+    // newData.append("cccd", data.cccd);
+    // newData.append("pickup_place", data.pickup_place);
+    // newData.append("dropoff_place", data.dropoff_place);
+    // newData.append("seats", choose);
+    // console.log(newData);
+    var temp = {
+      amount: amount,
+      carId: car.id,
+      quantity: choose.length,
+      fullname: data.fullname,
+      phone: data.phone,
+      email: data.email,
+      cccd: data.cccd,
+      pickup_place: data.pickup_place,
+      dropoff_place: data.dropoff_place,
+      arr: choose
+    }
+    reservationService.paypal(temp)
+    .then((response) => {
+      console.log(response.data);
+      window.location.href = response.data.data;
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+    // display form data on success
+    alert('SUCCESS!! :-)\n\n' + JSON.stringify(data, null, 4));
+    return false;
+  }
+
+
   const { id } = useParams();
   const [seats, setSeats] = useState([]);
+  const [choose, setChoose] = useState([]);
+  const arr = [];
 
   const getCar = (id) => {
     carService.getCar(id)
       .then((response) => {
         setSeats(response.data.data.car.carseats);
+        setCar(response.data.data.car);
+        //setAmout(response.data.data.car.price);
         console.log(response.data.data.car.carseats);
       })
       .catch((e) => {
@@ -21,6 +95,24 @@ function TicketBooking() {
   useEffect(() => {
     getCar(id);
   }, [id]);
+
+  const handleSeat = async (e) => {
+    console.log(e.target.checked);
+    if(e.target.checked){
+      await setChoose([...choose, e.target.name]);
+    }else{
+      await setChoose(choose.filter((name) => name !== e.target.name));
+    }
+    
+    console.log(choose.length);
+    //arr.push(e.target.name);
+    
+  }
+
+  console.log(choose.length);
+  useEffect(() => {
+    setAmout(choose.length*car?.price)
+  }, [choose, car]);
   
   return (
     <section className="ticket-booking pt-5 pb-5">
@@ -29,24 +121,36 @@ function TicketBooking() {
           <div class="col-md-4 order-md-2 mb-4">
             <h4 class="d-flex justify-content-between align-items-center mb-3">
               <span class="text-muted">Số vé</span>
-              <span class="badge badge-secondary badge-pill">3</span>
+              <span class="badge badge-secondary badge-pill">{choose.length}</span>
             </h4>
             <ul class="list-group mb-3">
-              <li class="list-group-item d-flex justify-content-between lh-condensed">
+              {
+                choose && choose.map((item) => (
+                  <li class="list-group-item d-flex justify-content-between lh-condensed" >
+                    <div class="text-success">
+                      <h6 class="my-0">{item}</h6>
+                      <small class="text-muted">Brief description</small>
+                    </div>
+                    <span class="text-muted">{car.price}</span>
+                  </li>
+                ))
+              }
+              {
+                  <li class="list-group-item d-flex justify-content-between">
+                    <span>Tổng giá (VND)</span>
+                    <strong>{amount}</strong>
+                  </li>
+              }
+              
+              {/* <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div class="text-success">
-                  <h6 class="my-0">Product 1</h6>
-                  <small class="text-muted">Brief description</small>
+                  <label>Số Lượng Vé</label>
+                  <input name="quantity" type="number" {...register('quantity')} onChange={(e) => setAmout(e.target.value*car.price)} className={`form-control ${errors.quantity ? 'is-invalid' : ''}`} />
+                  <div className="invalid-feedback">{errors.quantity?.message}</div>
                 </div>
-                <span class="text-muted">$12</span>
-              </li>
-              <li class="list-group-item d-flex justify-content-between lh-condensed">
-                <div class="text-success">
-                  <h6 class="my-0">Product 2</h6>
-                  <small class="text-muted">Brief description</small>
-                </div>
-                <span class="text-muted">$12</span>
-              </li>
-              <li class="list-group-item d-flex justify-content-between lh-condensed">
+                <span class="text-muted">{amount}</span>
+              </li> */}
+              {/* <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div class="text-success">
                   <h6 class="my-0">Product 3</h6>
                   <small class="text-muted">Brief description</small>
@@ -56,12 +160,12 @@ function TicketBooking() {
               <li class="list-group-item d-flex justify-content-between">
                 <span>Tổng giá (VND)</span>
                 <strong>1.000.000</strong>
-              </li>
+              </li> */}
             </ul>
           </div>
           <div class="col-md-8 order-md-1">
             <h4 class="mb-3">Thông tin thanh toán</h4>
-            <form class="needs-validation" novalidate>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <div className="row">
                 <div className="col-md-6"></div>
               </div>
@@ -77,378 +181,50 @@ function TicketBooking() {
                         <li class="row row--1">
                           <ol class="seats" type="A">
                             <li class="seat">
-                              <input type="checkbox" id={seat.name} disabled={seat.status ? true : false}/>
-                              <label for={seat.name}>{seat.name}</label>
+                              <input type="checkbox" id={seat.id} name={seat.name} disabled={seat.status ? true : false} onChange={(e)=> handleSeat(e)}/>
+                              <label for={seat.id}>{seat.name}</label>
                             </li>
                           </ol>
                         </li>
                       ))
                     }
-                    {/* <li class="row row--1">
-                      <ol class="seats" type="A">
-                        <li class="seat">
-                          <input type="checkbox" id="1A" />
-                          <label for="1A">1A</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="1B" />
-                          <label for="1B">1B</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="1C" />
-                          <label for="1C">1C</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" disabled id="1D" />
-                          <label for="1D">Occupied</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="1E" />
-                          <label for="1E">1E</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="1F" />
-                          <label for="1F">1F</label>
-                        </li>
-                      </ol>
-                    </li>
-                    <li class="row row--2">
-                      <ol class="seats" type="A">
-                        <li class="seat">
-                          <input type="checkbox" id="2A" />
-                          <label for="2A">2A</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="2B" />
-                          <label for="2B">2B</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="2C" />
-                          <label for="2C">2C</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="2D" />
-                          <label for="2D">2D</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="2E" />
-                          <label for="2E">2E</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="2F" />
-                          <label for="2F">2F</label>
-                        </li>
-                      </ol>
-                    </li>
-                    <li class="row row--3">
-                      <ol class="seats" type="A">
-                        <li class="seat">
-                          <input type="checkbox" id="3A" />
-                          <label for="3A">3A</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="3B" />
-                          <label for="3B">3B</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="3C" />
-                          <label for="3C">3C</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="3D" />
-                          <label for="3D">3D</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="3E" />
-                          <label for="3E">3E</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="3F" />
-                          <label for="3F">3F</label>
-                        </li>
-                      </ol>
-                    </li>
-                    <li class="row row--4">
-                      <ol class="seats" type="A">
-                        <li class="seat">
-                          <input type="checkbox" id="4A" />
-                          <label for="4A">4A</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="4B" />
-                          <label for="4B">4B</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="4C" />
-                          <label for="4C">4C</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="4D" />
-                          <label for="4D">4D</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="4E" />
-                          <label for="4E">4E</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="4F" />
-                          <label for="4F">4F</label>
-                        </li>
-                      </ol>
-                    </li>
-                    <li class="row row--5">
-                      <ol class="seats" type="A">
-                        <li class="seat">
-                          <input type="checkbox" id="5A" />
-                          <label for="5A">5A</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="5B" />
-                          <label for="5B">5B</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="5C" />
-                          <label for="5C">5C</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="5D" />
-                          <label for="5D">5D</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="5E" />
-                          <label for="5E">5E</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="5F" />
-                          <label for="5F">5F</label>
-                        </li>
-                      </ol>
-                    </li>
-                    <li class="row row--6">
-                      <ol class="seats" type="A">
-                        <li class="seat">
-                          <input type="checkbox" id="6A" />
-                          <label for="6A">6A</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="6B" />
-                          <label for="6B">6B</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="6C" />
-                          <label for="6C">6C</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="6D" />
-                          <label for="6D">6D</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="6E" />
-                          <label for="6E">6E</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="6F" />
-                          <label for="6F">6F</label>
-                        </li>
-                      </ol>
-                    </li>
-                    <li class="row row--7">
-                      <ol class="seats" type="A">
-                        <li class="seat">
-                          <input type="checkbox" id="7A" />
-                          <label for="7A">7A</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="7B" />
-                          <label for="7B">7B</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="7C" />
-                          <label for="7C">7C</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="7D" />
-                          <label for="7D">7D</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="7E" />
-                          <label for="7E">7E</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="7F" />
-                          <label for="7F">7F</label>
-                        </li>
-                      </ol>
-                    </li>
-                    <li class="row row--8">
-                      <ol class="seats" type="A">
-                        <li class="seat">
-                          <input type="checkbox" id="8A" />
-                          <label for="8A">8A</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="8B" />
-                          <label for="8B">8B</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="8C" />
-                          <label for="8C">8C</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="8D" />
-                          <label for="8D">8D</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="8E" />
-                          <label for="8E">8E</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="8F" />
-                          <label for="8F">8F</label>
-                        </li>
-                      </ol>
-                    </li>
-                    <li class="row row--9">
-                      <ol class="seats" type="A">
-                        <li class="seat">
-                          <input type="checkbox" id="9A" />
-                          <label for="9A">9A</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="9B" />
-                          <label for="9B">9B</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="9C" />
-                          <label for="9C">9C</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="9D" />
-                          <label for="9D">9D</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="9E" />
-                          <label for="9E">9E</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="9F" />
-                          <label for="9F">9F</label>
-                        </li>
-                      </ol>
-                    </li>
-                    <li class="row row--10">
-                      <ol class="seats" type="A">
-                        <li class="seat">
-                          <input type="checkbox" id="10A" />
-                          <label for="10A">10A</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="10B" />
-                          <label for="10B">10B</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="10C" />
-                          <label for="10C">10C</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="10D" />
-                          <label for="10D">10D</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="10E" />
-                          <label for="10E">10E</label>
-                        </li>
-                        <li class="seat">
-                          <input type="checkbox" id="10F" />
-                          <label for="10F">10F</label>
-                        </li>
-                      </ol>
-                    </li> */}
                   </ol>
                   <div class="exit exit--back fuselage"></div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="fullname">Họ tên</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="fullname"
-                    placeholder="Ví dụ: Nguyễn Văn A"
-                    value=""
-                    required
-                  />
-                  <div class="invalid-feedback">Vui lòng nhập họ tên</div>
+                  <label>Họ Tên</label>
+                  <input name="fullname" type="text" {...register('fullname')} className={`form-control ${errors.fullname ? 'is-invalid' : ''}`} />
+                  <div className="invalid-feedback">{errors.fullname?.message}</div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="phone">Số điện thoại</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="phone"
-                    placeholder="Ví dụ: 0982686868"
-                    value=""
-                    required
-                  />
-                  <div class="invalid-feedback">
-                    Vui lòng nhập số điện thoại
-                  </div>
+                  <label>Số Điện Thoại</label>
+                  <input name="phone" type="text" {...register('phone')} className={`form-control ${errors.phone ? 'is-invalid' : ''}`} />
+                  <div className="invalid-feedback">{errors.phone?.message}</div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="cmnd">Số CMND/CCCD người đi</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="cmnd"
-                    placeholder="Ví dụ: 215593851"
-                    value=""
-                    required
-                  />
-                  <div class="invalid-feedback">
-                    Vui lòng nhập số chứng minh nhân dân/Căn cước công dân người
-                    đi
-                  </div>
+                  <label>CMND/CCCD</label>
+                  <input name="cccd" type="text" {...register('cccd')} className={`form-control ${errors.cccd ? 'is-invalid' : ''}`} />
+                  <div className="invalid-feedback">{errors.cccd?.message}</div>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="email">Địa chỉ E-mail</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="email"
-                    placeholder="Ví dụ: nguyenvana@gmail.com"
-                    value=""
-                    required
-                  />
-                  <div class="invalid-feedback">
-                    Vui lòng nhập địa chỉ E-mail
-                  </div>
+                  <label>Email</label>
+                  <input name="email" type="text" {...register('email')} className={`form-control ${errors.email ? 'is-invalid' : ''}`} />
+                  <div className="invalid-feedback">{errors.email?.message}</div>
                 </div>
                 <div class="mb-3">
-                  <label for="address">Nơi đón khách</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="address"
-                    value=""
-                    placeholder="Ngã 3 Cây ổi"
-                    required
-                  />
-                  <div class="invalid-feedback">
-                    Vui lòng nhập nơi bạn muốn lên xe
-                  </div>
+                  <label>Nơi Đón Khách</label>
+                  <input name="pickup_place" type="text" {...register('pickup_place')} className={`form-control ${errors.pickup_place ? 'is-invalid' : ''}`} />
+                  <div className="invalid-feedback">{errors.pickup_place?.message}</div>
                 </div>
                 <div class="mb-3">
-                  <label for="address2">Nơi trả khách</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="address2"
-                    value=""
-                    placeholder="Bến xe Suối Tiên"
-                    required
-                  />
-                  <div class="invalid-feedback">
-                    Vui lòng nhập nơi bạn muốn xuống xe
-                  </div>
+                  <label>Nơi Trả Khách</label>
+                  <input name="dropoff_place" type="text" {...register('dropoff_place')} className={`form-control ${errors.dropoff_place ? 'is-invalid' : ''}`} />
+                  <div className="invalid-feedback">{errors.dropoff_place?.message}</div>
+                </div>
+                <div class="mb-3">
+                  <input name="acceptPaypal" type="checkbox" {...register('acceptPaypal')} id="acceptPaypal" className={`form-check-input ${errors.acceptPaypal ? 'is-invalid' : ''}`} />
+                  <label htmlFor="acceptPaypal" className="form-check-label">Paypal Accept & Conditions</label>
+                  <div className="invalid-feedback">{errors.acceptPaypal?.message}</div>
                 </div>
               </div>
               <button class="btn btn-primary btn-lg btn-block" type="submit">

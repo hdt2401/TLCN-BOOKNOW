@@ -110,10 +110,10 @@ function CarDetails(props) {
                       />
                     </div>
                     <div className="col-auto">
-                      <Link to={`/booking/${car.id}`} className="btn btn-primary">
+                      {/* <Link to={`/booking/${car.id}`} className="btn btn-primary">
                         Đặt ngay
-                      </Link>
-                      <Link to={`/booking/${car.id}`} className="btn btn-warning">
+                      </Link> */}
+                      <Link to={`ticketbooking/${car.id}`} className="btn btn-warning">
                         Chọn Tuyến
                       </Link>
                     </div>
