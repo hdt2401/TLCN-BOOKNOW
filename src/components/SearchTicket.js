@@ -26,15 +26,13 @@ function SearchTicket() {
     fontSize: "14px",
     textAlign: "center",
   };
-  const today = Date.now();
-  console.log(today);
-  const [datePicker, setDatePicker] = useState(new Date());
   const [start, setStart] = useState(options[0].value);
   const [destination, setDestination] = useState(options[12].value);
   const [submited, setSubmited] = useState(false);
   const [data, setData] = useState([]);
-  function handleDatePicker(datePicker) {
-    setDatePicker(datePicker);
+  const [date, setDate] = useState(formatDate(new Date()));
+  const handleDate = (e) => {
+    setDate(e.target.value);
   }
   const handleChangeStart = (selectedOption) => {
     setStart(selectedOption.value);
@@ -44,18 +42,19 @@ function SearchTicket() {
   };
   console.log(start);
   console.log(destination);
+  console.log(date);
   const handleSubmit = (e) => {
     e.preventDefault();
-    carService.search(start, destination)
-    .then((response) => {
-      console.log(response.data);
-      setData(response.data.data.cars);
-      setSubmited(true);
-      history.push(`/resultticket?start=${start}&destination=${destination}&date=${formatDate(datePicker)}`);
-    })
-    .catch((e) => {
-      console.log(e);
-    });
+    // carService.search(start, destination, date)
+    // .then((response) => {
+    //   console.log(response.data);
+    //   setData(response.data.data.cars);
+    //   setSubmited(true);
+      history.push(`/resultticket?start=${start}&destination=${destination}&date=${formatDate(date)}`);
+    // })
+    // .catch((e) => {
+    //   console.log(e);
+    // });
   }
   console.log(data);
   return (
@@ -97,17 +96,13 @@ function SearchTicket() {
                 <div className="col-md-3">
                   <div className="form-option">
                     <label>Thời gian</label>
-                    <DatePicker
-                      containerStyle={{
-                        width: "100%",
-                      }}
-                      style={styleDatePicker}
-                      value={datePicker}
-                      minDate={today}
-                      locale={vi_VN}
-                      format="DD-MMMM-YYYY"
-                      animations={[transition()]}
-                      onChange={handleDatePicker}
+                    <input
+                      className="form-control"
+                      name="date"
+                      type="date"
+                      min={formatDate(new Date())}
+                      defaultValue={formatDate(new Date())}
+                      onChange={(e) => {handleDate(e)}}
                     />
                   </div>
                 </div>
@@ -125,93 +120,6 @@ function SearchTicket() {
         )
       }
     </div>
-    // <div>
-    //   {
-    //     submited ? (<ResultTicket data={data}/>) :(
-    //       <div className="search">
-    //         <div className="container">
-    //           <div className="search-title">
-    //             <h1>Book now - Trang web đặt vé xe tiện lợi nhất Việt Nam</h1>
-    //           </div>
-    //           <form className="form-search" onSubmit={(e) => handleSubmit(e)}>
-    //             <div className="row">
-    //               <div className="col-4">
-    //                 <div className="form-selection">
-    //                   <i className="fas fa-bus"></i>
-    //                   <h2>Xe giường nằm</h2>
-    //                 </div>
-    //               </div>
-    //               <div className="col-4">
-    //                 <div className="form-selection">
-    //                   <i className="fas fa-chair"></i>
-    //                   <h2>Xe ghế mềm</h2>
-    //                 </div>
-    //               </div>
-    //               <div className="col-4">
-    //                 <div className="form-selection">
-    //                   <i className="fas fa-archive"></i>
-    //                   <h2>Gửi hàng</h2>
-    //                 </div>
-    //               </div>
-    //             </div>
-    //             <div className="row">
-    //               <div className="col-md-3">
-    //                 <div id="from" className="form-option">
-    //                   <label htmlFor="">Điểm đi</label>
-    //                   <Select
-    //                     className="basic-single"
-    //                     classNamePrefix="select"
-    //                     defaultValue={options[0]}
-    //                     name="location"
-    //                     options={options}
-    //                     onChange={handleChangeStart}
-    //                   />
-    //                 </div>
-    //               </div>
-    //               <div className="col-md-3">
-    //                 <div className="form-option">
-    //                   <label>Điểm đến</label>
-    //                   <Select
-    //                     className="basic-single"
-    //                     classNamePrefix="select"
-    //                     defaultValue={options[0]}
-    //                     name="location"
-    //                     options={options}
-    //                     onChange={handleChangeDes}
-    //                   />
-    //                 </div>
-    //               </div>
-    //               <div className="col-md-3">
-    //                 <div className="form-option">
-    //                   <label>Thời gian</label>
-    //                   <DatePicker
-    //                     containerStyle={{
-    //                       width: "100%",
-    //                     }}
-    //                     style={styleDatePicker}
-    //                     value={datePicker}
-    //                     minDate={today}
-    //                     locale={vi_VN}
-    //                     format="DD-MMMM-YYYY"
-    //                     animations={[transition()]}
-    //                     onChange={handleDatePicker}
-    //                   />
-    //                 </div>
-    //               </div>
-    //               <div className="col-md-3">
-    //                 <div className="form-option">
-    //                   <button type="submit" className="btn-search button-submit">
-    //                     Tìm chuyến
-    //                   </button>
-    //                 </div>
-    //               </div>
-    //             </div>
-    //           </form>
-    //         </div>
-    //       </div>
-    //     )
-    //   }
-    // </div>
   );
 }
 

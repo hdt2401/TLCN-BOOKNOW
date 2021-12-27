@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import UserService from "../services/user.service";
+import { SuccessNotify } from '../utils/Notify';
 
 function UpdateUser(props) {
   // const initialCategoryState = {
@@ -59,7 +60,7 @@ function onSubmit(data) {
       UserService.update(data)
       .then((response) => {
         reset();
-        alert("You have updated profile successfully!");
+        SuccessNotify("Cập nhật thông tin thành công");
       })
       .catch((e) => {
         console.log(e);

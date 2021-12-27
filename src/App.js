@@ -28,6 +28,8 @@ import ResultTicket from "./components/ResultTicket";
 import TicketBooking from "./components/TicketBooking";
 import ForgetPassword from "./components/Forget/ForgetPassword";
 import NewPassword from "./components/Forget/NewPassword";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
@@ -60,6 +62,19 @@ function App() {
         <Route path="*" component={NotFound} />
       </Switch>
       <Footer />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+      {/* Same as */}
+      <ToastContainer />
     </div>
   );
 }

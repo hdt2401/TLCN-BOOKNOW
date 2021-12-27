@@ -4,6 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { useParams } from "react-router-dom";
 import authService from "../../services/auth.service";
+import { SuccessNotify } from "../../utils/Notify";
 
 
 function NewPassword() {
@@ -31,34 +32,12 @@ function NewPassword() {
     function onSubmit(data) {
         authService.reset(confirmationCode, data)
         .then((response) => {
-            console.log(response.data);
-            alert("Thành Công");
+            SuccessNotify("Thiết lập mật khẩu mới thành công");
             reset();
         })
         .catch((e) => {
             console.log(e);
         });
-        // UserService.NewPassword(data).then(
-        //     (response) => {
-        //     setMessage("");
-        //     setSuccessful(false);
-        //     alert("Update Password Sucessfully.");
-        //     reset();
-        //     },
-        //     (error) => {
-        //     const resMessage =
-        //         (error.response &&
-        //         error.response.data &&
-        //         error.response.data.message) ||
-        //         error.message ||
-        //         error.toString();
-        //     setMessage(resMessage);
-        //     setSuccessful(false);
-        //     }
-        // );
-        // display form data on success
-        alert('SUCCESS!! :-)\n\n' + JSON.stringify(data, null, 4));
-        return false;
     }
   return (
     <div className="co-opration-company">

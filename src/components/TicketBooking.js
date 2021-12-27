@@ -9,6 +9,11 @@ import * as Yup from 'yup';
 import reservationService from "../services/reservation.service";
 
 function TicketBooking() {
+  const queryString = window.location.search;
+
+  const urlParams = new URLSearchParams(queryString);
+  const date = urlParams.get("date");
+  console.log(date);
 
   // form validation rules 
   const validationSchema = Yup.object().shape({
@@ -37,22 +42,11 @@ function TicketBooking() {
   const [amount, setAmout] = useState(0);
 
   function onSubmit(data) {
-    // const newData = new FormData();
-    // newData.append("amount", amount);
-    // newData.append("carId", car.id);
-    // newData.append("quantity", data.quantity);
-    // newData.append("fullname", data.fullname);
-    // newData.append("phone", data.phone);
-    // newData.append("email", data.email);
-    // newData.append("cccd", data.cccd);
-    // newData.append("pickup_place", data.pickup_place);
-    // newData.append("dropoff_place", data.dropoff_place);
-    // newData.append("seats", choose);
-    // console.log(newData);
     var temp = {
       amount: amount,
       carId: car.id,
       quantity: choose.length,
+      reservations_date: date,
       fullname: data.fullname,
       phone: data.phone,
       email: data.email,
@@ -61,6 +55,7 @@ function TicketBooking() {
       dropoff_place: data.dropoff_place,
       arr: choose
     }
+    console.log(temp);
     reservationService.paypal(temp)
     .then((response) => {
       console.log(response.data);
@@ -70,14 +65,16 @@ function TicketBooking() {
       console.log(e);
     });
     // display form data on success
-    alert('SUCCESS!! :-)\n\n' + JSON.stringify(data, null, 4));
-    return false;
+    // alert('SUCCESS!! :-)\n\n' + JSON.stringify(data, null, 4));
+    // return false;
   }
 
 
   const { id } = useParams();
   const [seats, setSeats] = useState([]);
   const [choose, setChoose] = useState([]);
+  const [positions, setPositions] = useState([]);
+  const [flag, setFlag] = useState([]);
   const arr = [];
 
   const getCar = (id) => {
@@ -92,24 +89,45 @@ function TicketBooking() {
         console.log(e);
       });
   };
+  const getTicket = (id) => {
+    reservationService.getPosition(id, date)
+      .then((response) => {
+        setPositions(response.data.data.reservation);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
   useEffect(() => {
     getCar(id);
+    getTicket(id);
   }, [id]);
-
+  var temp = [];
+  var result = [];
+  useEffect(() => {
+    console.log(positions)
+    if(positions.length > 0){
+      
+     for(var i=0; i< positions.length; i++){
+       console.log(positions[i].position.split(","));
+      temp = positions[i].position.split(",");
+      result = result.concat(temp);
+     }
+     setFlag(result);
+      console.log(result);
+      console.log(result.includes("A3"));
+    }
+  }, [positions]);
+  console.log(result.includes("A3"));
+  
   const handleSeat = async (e) => {
-    console.log(e.target.checked);
     if(e.target.checked){
       await setChoose([...choose, e.target.name]);
     }else{
       await setChoose(choose.filter((name) => name !== e.target.name));
     }
-    
-    console.log(choose.length);
-    //arr.push(e.target.name);
-    
   }
 
-  console.log(choose.length);
   useEffect(() => {
     setAmout(choose.length*car?.price)
   }, [choose, car]);
@@ -129,7 +147,6 @@ function TicketBooking() {
                   <li class="list-group-item d-flex justify-content-between lh-condensed" >
                     <div class="text-success">
                       <h6 class="my-0">{item}</h6>
-                      <small class="text-muted">Brief description</small>
                     </div>
                     <span class="text-muted">{car.price}</span>
                   </li>
@@ -181,7 +198,7 @@ function TicketBooking() {
                         <li class="row row--1">
                           <ol class="seats" type="A">
                             <li class="seat">
-                              <input type="checkbox" id={seat.id} name={seat.name} disabled={seat.status ? true : false} onChange={(e)=> handleSeat(e)}/>
+                              <input type="checkbox" id={seat.id} name={seat.name} disabled={ flag.includes(seat.name) } onChange={(e)=> handleSeat(e)}/>
                               <label for={seat.id}>{seat.name}</label>
                             </li>
                           </ol>
@@ -223,7 +240,7 @@ function TicketBooking() {
                 </div>
                 <div class="mb-3">
                   <input name="acceptPaypal" type="checkbox" {...register('acceptPaypal')} id="acceptPaypal" className={`form-check-input ${errors.acceptPaypal ? 'is-invalid' : ''}`} />
-                  <label htmlFor="acceptPaypal" className="form-check-label">Paypal Accept & Conditions</label>
+                  <label htmlFor="acceptPaypal" className="form-check-label">Chấp Nhận Thanh Toán Paypal</label>
                   <div className="invalid-feedback">{errors.acceptPaypal?.message}</div>
                 </div>
               </div>

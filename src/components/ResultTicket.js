@@ -13,11 +13,12 @@ function ResultTicket() {
   const start = urlParams.get("start");
   const destination = urlParams.get("destination");
   const date = urlParams.get("date");
+  console.log(date);
 
   const [cars, setCars] = useState([]);
-  const result = () => {
+  const result = (start, destination,date) => {
     carService
-      .search(start, destination)
+      .search(start, destination, date)
       .then((response) => {
         console.log(response.data);
         setCars(response.data.data.cars);
@@ -28,7 +29,7 @@ function ResultTicket() {
   };
 
   useEffect(() => {
-    result(start, destination);
+    result(start, destination,date);
   }, []);
   console.log(start);
   console.log(destination);
@@ -142,7 +143,7 @@ function ResultTicket() {
                             </div>
                           </div>
                           <div class="button-book">
-                              <Link to={`ticketbooking/${car.lines.id}`}>
+                              <Link to={`ticketbooking/${car.lines.id}?date=${date}`}>
                                 <button className="btn btn-primary">Đặt ngay</button>
                               </Link>
                           </div>

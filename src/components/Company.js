@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import storage from "../firebase";
 import companyService from "../services/company.service";
+import { SuccessNotify } from "../utils/Notify";
 
 
 function Company(props) {
@@ -29,9 +30,7 @@ function Company(props) {
     const [submited, setSubmited] = useState(false);
 
     const handleImageChange = (e) => {
-      console.log(e.target.files[0]);
       setFile(e.target.files[0]);
-      //setFileName(e.target.files[0].name);
     };
 
 
@@ -47,32 +46,19 @@ function Company(props) {
             () => {
                 getDownloadURL(uploadTask.snapshot.ref).then(
                     async (downloadURL) => {
-                        // const payload = data;
-                        // payload.image = downloadURL;
                         data.image = downloadURL;
-                        console.log(data);
                         companyService.create(data)
                         .then((response) => {
                           setSubmited(true);
-                          console.log(response.data);
+                          SuccessNotify("Gửi thành công");
                         })
                         .catch((error) => {
                           console.log(error);
                         })
-                        // const result = await createServiceApi(payload);
-                        // if (result.code === 201) {
-                        //     notifySuccess('Đã tạo dịch vụ mới');
-                        //     history.push('/business-dashboard/services');
-                        // } else {
-                        //     notifyError(result.message);
-                        // }
                     }
                 );
             }
         );
-      // display form data on success
-      // alert('SUCCESS!! :-)\n\n' + JSON.stringify(data, null, 4));
-      // return false;
     }
   return (
     <div className="co-opration-company">

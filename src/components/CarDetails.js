@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import CarService from "../services/car.service";
 import FeedbackService from "../services/feedback.service";
 import AuthService from "../services/auth.service";
+import { SuccessNotify } from "../utils/Notify";
 
 function CarDetails(props) {
   const [car, setCar] = useState({});
@@ -19,8 +20,6 @@ function CarDetails(props) {
       .then((response) => {
         setCar(response.data.data.car);
         console.log(car);
-        // setSchedules(response.data.data.car.schedules)
-        // console.log(response.data.data.car.schedules);
       })
       .catch((e) => {
         console.log(e);
@@ -32,18 +31,15 @@ function CarDetails(props) {
     FeedbackService.getFeedbacks(id)
       .then((response) => {
         setFeedbacks(response.data.data.feedback.feedbacks);
-        //console.log(response.data.data.feedback.feedbacks);
       })
       .catch((e) => {
         console.log(e);
       });
   };
-  //console.log(feedbacks.feedbacks);
 
   useEffect(() => {
     getCar(props.match.params.id);
     getFeedbacks(props.match.params.id);
-    //console.log(props.match.params.id);
   }, [props.match.params.id]);
 
   useEffect(() => {
@@ -52,16 +48,13 @@ function CarDetails(props) {
     if (user) {
       setCurrentUser(user);
     }
-    //console.log(user);
   }, []);
   const ratingChanged = (newRating) => {
     setStar(newRating);
-    //console.log(newRating);
   };
   const handleInputChange = (e) => {
     const content = e.target.value;
     setFeedback(content);
-    //console.log(feedback);
   };
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -73,12 +66,9 @@ function CarDetails(props) {
     console.log(data);
     FeedbackService.create(id, data)
       .then((response) => {
-        //setMessage("ok");
-        console.log(response.data);
         setStar(1);
-        //setFeedback("");
+        SuccessNotify("Đánh giá thành công");
         getFeedbacks(props.match.params.id);
-        //console.log("Create ok");
       })
       .catch((e) => {
         console.log(e);

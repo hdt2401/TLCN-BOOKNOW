@@ -5,6 +5,7 @@ import CheckButton from "react-validation/build/button";
 import { isEmail } from "validator";
 
 import AuthService from "../services/auth.service";
+import { ErrorNotify, SuccessNotify } from "../utils/Notify";
 
 const required = (value) => {
   if (!value) {
@@ -83,6 +84,7 @@ const Register = (props) => {
       AuthService.register(username, email, password).then(
         (response) => {
           setMessage(response.data.message);
+          SuccessNotify("Tạo tài khoản thành công");
           setSuccessful(true);
         },
         (error) => {
@@ -94,6 +96,7 @@ const Register = (props) => {
             error.toString();
 
           setMessage(resMessage);
+          ErrorNotify(resMessage);
           setSuccessful(false);
         }
       );

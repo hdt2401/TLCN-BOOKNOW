@@ -15,8 +15,15 @@ const update = (data) => {
   });
 };
 
+const getUser = () => {
+  return axios.get(API_URL + "user/me", {
+    headers: authHeader(),
+  });
+}
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   changePassword,
   update,
+  getUser
 };

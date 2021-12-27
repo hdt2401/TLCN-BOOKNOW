@@ -4,7 +4,7 @@ import authHeader from "../services/auth-service";
 const API_URL = "http://localhost:8080/";
 
 const getBooking = (id) => {
-  return axios.get(API_URL + `reservations/${id}`, {
+  return axios.get(API_URL + `reservations/user/${id}`, {
     headers: authHeader(),
   });
 };
@@ -21,9 +21,16 @@ const paypal = async (data) => {
   });
 }
 
+const getPosition = (id, date) => {
+  return axios.get(API_URL + `reservations/test/${id}?date=${date}`, {
+    headers: authHeader(),
+  });
+};
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   create,
   paypal,
-  getBooking
+  getBooking,
+  getPosition
 };

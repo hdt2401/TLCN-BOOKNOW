@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import contactService from "../services/contact.service";
+import { SuccessNotify } from "../utils/Notify";
 
 function Contact() {
   // form validation rules 
@@ -29,14 +30,11 @@ function onSubmit(data) {
     .then((response) => {
       setSubmited(true);
       reset();
-      alert("Yêu cầu của bạn đã được tiếp nhận.");
+      SuccessNotify("Yêu cầu của bạn đã được tiếp nhận.");
     })
     .catch((error) => {
       console.log(error);
     })
-    // display form data on success
-    // alert('SUCCESS!! :-)\n\n' + JSON.stringify(data, null, 4));
-    // return false;
 }
   return (
     <section className="contact-us">

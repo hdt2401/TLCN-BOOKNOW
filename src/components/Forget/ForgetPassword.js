@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import authService from "../../services/auth.service";
+import { SuccessNotify } from "../../utils/Notify";
 
 function ForgetPassword() {
   // form validation rules
@@ -18,16 +19,12 @@ function ForgetPassword() {
   function onSubmit(data) {
     authService.forgot(data)
     .then((response) => {
-        console.log(response.data);
-        alert("Thành Công");
         reset();
+        SuccessNotify("Vui lòng kiểm tra Email để lấy lại mật khẩu");
       })
       .catch((e) => {
         console.log(e);
       });
-    // display form data on success
-    // alert("SUCCESS!! :-)\n\n" + JSON.stringify(data, null, 4));
-    // return false;
   }
   return (
     <div className="co-opration-company">

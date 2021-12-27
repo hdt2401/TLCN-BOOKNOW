@@ -6,6 +6,8 @@ import CheckButton from "react-validation/build/button";
 import axios from "axios";
 
 import AuthService from "../services/auth.service";
+import { ErrorNotify, SuccessNotify } from "../utils/Notify";
+import { Link } from "react-router-dom";
 
 const required = (value) => {
   if (!value) {
@@ -47,6 +49,7 @@ const Login = (props) => {
     if (checkBtn.current.context._errors.length === 0) {
       AuthService.login(username, password).then(
         () => {
+          SuccessNotify("Đăng Nhập Thành Công");
           props.history.push("/home");
           window.location.reload();
         },
@@ -60,6 +63,7 @@ const Login = (props) => {
 
           setLoading(false);
           setMessage(resMessage);
+          ErrorNotify(resMessage);
         }
       );
     } else {
@@ -99,6 +103,9 @@ const Login = (props) => {
               onChange={onChangePassword}
               validations={[required]}
             />
+          </div>
+          <div>
+            <Link to="/forgot">Quên Mật Khẩu</Link>
           </div>
 
           <div className="form-group">
