@@ -15,6 +15,12 @@ const getCar = (id) => {
   });
 };
 
+const getCarSeat = (id) => {
+  return axios.get(API_URL + `cars/carseats/${id}`, {
+    headers: authHeader(),
+  });
+};
+
 const getDetailCar = (id) => {
   return axios.get(API_URL + `schedules/car/${id}`, {
     headers: authHeader(),
@@ -25,8 +31,8 @@ const search = (start, des, date) => {
     headers: authHeader(),
   });
 };
-const searchFilter = (start, des, price) => {
-  return axios.get(API_URL + `cars/car/search?start=${start}&destination=${des}&price=${price}`, {
+const searchFilter = (start, des, date, price) => {
+  return axios.get(API_URL + `cars/car/search?start=${start}&destination=${des}&date=${date}&price=${price}`, {
     headers: authHeader(),
   });
 };
@@ -36,5 +42,6 @@ export default {
   getCar,
   getDetailCar,
   search,
-  searchFilter
+  searchFilter,
+  getCarSeat
 };

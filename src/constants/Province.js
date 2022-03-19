@@ -4,8 +4,8 @@ exports.province = [
       label: "Sài Gòn"
     },
     {
-      value: "An Giang",
-      label: "An Giang"
+      value: "Đắk Lắk",
+      label: "Đắk Lắk",
     },
     {
       value: "Bình Định",
@@ -68,8 +68,8 @@ exports.province = [
       label: "Đắk Nông",
     },
     {
-      value: "Đắk Lắk",
-      label: "Đắk Lắk",
+      value: "An Giang",
+      label: "An Giang"
     },
     {
       value: "Đà Nẵng",

@@ -26,8 +26,8 @@ function SearchTicket() {
     fontSize: "14px",
     textAlign: "center",
   };
-  const [start, setStart] = useState(options[0].value);
-  const [destination, setDestination] = useState(options[12].value);
+  const [start, setStart] = useState(options[12].value);
+  const [destination, setDestination] = useState(options[0].value);
   const [submited, setSubmited] = useState(false);
   const [data, setData] = useState([]);
   const [date, setDate] = useState(formatDate(new Date()));
@@ -73,7 +73,7 @@ function SearchTicket() {
                     <Select
                       className="basic-single"
                       classNamePrefix="select"
-                      defaultValue={options[0]}
+                      defaultValue={options[12]}
                       name="location"
                       options={options}
                       onChange={handleChangeStart}

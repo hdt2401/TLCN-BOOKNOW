@@ -78,7 +78,7 @@ function TicketBooking() {
   const arr = [];
 
   const getCar = (id) => {
-    carService.getCar(id)
+    carService.getCarSeat(id)
       .then((response) => {
         setSeats(response.data.data.car.carseats);
         setCar(response.data.data.car);

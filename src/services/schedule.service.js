@@ -4,7 +4,7 @@ import authHeader from "../services/auth-service";
 const API_URL = "http://localhost:8080/";
 
 const getLines = () => {
-  return axios.get(API_URL + "schedules");
+  return axios.get(API_URL + "lines");
 };
 
 const getRoutesOfCar = (id) => {

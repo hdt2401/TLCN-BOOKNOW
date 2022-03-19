@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
@@ -6,9 +6,21 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import storage from "../firebase";
 import companyService from "../services/company.service";
 import { SuccessNotify } from "../utils/Notify";
+import authService from "../services/auth.service";
+import { Redirect } from "react-router-dom";
 
 
 function Company(props) {
+  const [currentUser, setCurrentUser] = useState(undefined);
+
+  useEffect(() => {
+    const user = authService.getCurrentUser();
+
+    if (user) {
+      setCurrentUser(user);
+    }
+    console.log(user);
+  }, []);
   // form validation rules 
     const validationSchema = Yup.object().shape({
     name: Yup.string()
@@ -50,7 +62,7 @@ function Company(props) {
                         companyService.create(data)
                         .then((response) => {
                           setSubmited(true);
-                          SuccessNotify("Gửi thành công");
+                          SuccessNotify("Yêu cầu của bạn đã được gửi đi, chờ xét duyện.");
                         })
                         .catch((error) => {
                           console.log(error);
@@ -64,7 +76,7 @@ function Company(props) {
     <div className="co-opration-company">
       <div className="container">
         {
-          submited ? (<div>Yêu cầu của bạn đã được gửi đi, chờ xét duyện.</div>) : (
+          currentUser ? (
             <div>
               <h1 className="heading-title text-center">Đăng ký trở thành đối tác</h1>
               <div className="row justify-content-center">
@@ -102,6 +114,9 @@ function Company(props) {
                 </div>
               </div>
             </div>
+          
+          ) : (
+            <p>Vui lòng đăng nhập để trở thành đối tác của trang web.</p>
           )
         }
       </div>

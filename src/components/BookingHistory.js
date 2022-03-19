@@ -9,6 +9,7 @@ function BookingHistory(props) {
         reservationService.getBooking(id)
           .then((response) => {
             setBooks(response.data.data.reservation);
+            console.log(response.data);
           })
           .catch((e) => {
             console.log(e);
@@ -40,6 +41,9 @@ function BookingHistory(props) {
                     Nhà Xe: {item.cars.name}
                   </h5>
                   <p class="card-text">
+                    Hành Trình: {item.cars.station} - {item.cars.station_to}
+                  </p>
+                  <p class="card-text">
                     Mã Vé: {item.receipt_number}
                   </p>
                   <p class="card-text">
@@ -55,7 +59,10 @@ function BookingHistory(props) {
                     Số Điện Thoại: {item.phone}
                   </p>
                   <p class="card-text">
-                    Ngày Đặt Vé: {item.createdAt}
+                    Ngày Đặt Vé: {formatDate(item.createdAt)}
+                  </p>
+                  <p class="card-text">
+                    Ngày Đi Xe: {formatDate(item.reservation_date)}
                   </p>
                 </div>
               </div>
@@ -66,5 +73,17 @@ function BookingHistory(props) {
     </section>
     );
 }
+
+const formatDate = (date) => {
+  var d = new Date(date),
+    month = "" + (d.getMonth() + 1),
+    day = "" + d.getDate(),
+    year = d.getFullYear();
+
+  if (month.length < 2) month = "0" + month;
+  if (day.length < 2) day = "0" + day;
+
+  return [year, month, day].join("-");
+};
 
 export default BookingHistory;

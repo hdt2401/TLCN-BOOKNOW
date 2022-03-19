@@ -1,31 +1,32 @@
 import React, { useState, useEffect } from "react";
 import ReactStars from "react-rating-stars-component";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import CarService from "../services/car.service";
 import FeedbackService from "../services/feedback.service";
 import AuthService from "../services/auth.service";
 import { SuccessNotify } from "../utils/Notify";
 
 function CarDetails(props) {
+  let history = useHistory();
   const [car, setCar] = useState({});
   const [feedbacks, setFeedbacks] = useState([]);
   const [currentUser, setCurrentUser] = useState(undefined);
   const [feedback, setFeedback] = useState("");
   const [star, setStar] = useState(1);
-  const [message, setMessage] = useState("");
-  const [schedules, setSchedules] = useState([]);
+  const [lines, setLines] = useState([]);
 
   const getCar = (id) => {
     CarService.getCar(id)
       .then((response) => {
         setCar(response.data.data.car);
+        setLines(response.data.data.car.lines)
         console.log(car);
       })
       .catch((e) => {
         console.log(e);
       });
   };
-  console.log(car);
+  console.log(lines);
 
   const getFeedbacks = (id) => {
     FeedbackService.getFeedbacks(id)
@@ -114,20 +115,29 @@ function CarDetails(props) {
             <div className="col-md-6">
               <h2>Thông tin chi tiết về nhà xe</h2>
               
-              {/* {
-                schedules && schedules.map((item, index) => (
+              {
+                lines && lines.map((item, index) => (
                   <ul className="info-car-list p-0">
                     <li className="info-car-item d-flex">
                       <p className="info-title">Hành Trình:</p>
-                      <div className="info-content">{item.carroutes.starting_point}  -  {item.carroutes.destination}</div>
+                      <div className="info-content">{item.start}  -  {item.destination}</div>
                     </li>
                     <li className="info-car-item d-flex">
                       <p className="info-title">Thời gian:</p>
-                      <div className="info-content">{item.carroutes.departture_time}  -  {item.carroutes.arrival_time}</div>
+                      <div className="info-content">{item.departure_time}  -  {item.arrival_time}</div>
+                    </li>
+                    <li className="info-car-item d-flex">
+                      <p className="info-title">Các Thứ Trong Tuần:</p>
+                      <div className="info-content">{item.weekdays}</div>
+                    </li>
+                    <li className="info-car-item d-flex">
+                      <button className="btn btn-warning" onClick={()=> history.push(`/ticketbooking/${car.id}?date=2021-12-28`)}>
+                        Chọn Tuyến
+                      </button>
                     </li>
                   </ul>
                 ))
-              } */}
+              }
               <p>Số Ghế: {car.capacity}</p><br/>
               <p>Giá Vé: {car.price}</p><br/>
               <p>Biển Số: {car.plate_number}</p><br/>

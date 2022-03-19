@@ -13,27 +13,35 @@ function ResultTicket() {
   const start = urlParams.get("start");
   const destination = urlParams.get("destination");
   const date = urlParams.get("date");
-  console.log(date);
 
   const [cars, setCars] = useState([]);
-  const result = (start, destination,date) => {
+  const [price, setPrice] = useState(100000);
+  const result = (start, destination,date, price) => {
     carService
-      .search(start, destination, date)
+      .searchFilter(start, destination, date, price)
       .then((response) => {
-        console.log(response.data);
+        //console.log(response.data);
         setCars(response.data.data.cars);
       })
       .catch((e) => {
         console.log(e);
       });
   };
+  // const result = (start, destination,date) => {
+  //   carService
+  //     .search(start, destination, date)
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       setCars(response.data.data.cars);
+  //     })
+  //     .catch((e) => {
+  //       console.log(e);
+  //     });
+  // };
 
   useEffect(() => {
-    result(start, destination,date);
+    result(start, destination,date, price);
   }, []);
-  console.log(start);
-  console.log(destination);
-  console.log(date);
 
   return (
     <div className="result-ticket pt-5 pb-5">

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import LineService from "../services/schedule.service";
 
 function Lines(props) {
+  let history = useHistory();
   const [lines, setLines] = useState([]);
   useEffect(() => {
     retrieveLines();
@@ -37,14 +38,12 @@ function Lines(props) {
               <div class="col-md-8">
                 <div class="card-body">
                   <h5 class="card-title">
-                    Tuyến: {line.starting_point} - {line.destination}
+                    Tuyến: {line.start} - {line.destination}
                   </h5>
                   <p class="card-text">
-                    Thời gian: {line.departture_time} - {line.arrival_time}
+                    Thời gian: {line.departure_time} - {line.arrival_time}
                   </p>
-                  <Link to={`lines/${line.id}`} >
-                    <button className="btn btn-primary">Xem Chi Tiết</button>
-                  </Link>
+                  <button className="btn btn-primary" onClick={() => history.push(`/resultticket?start=${line.start}&destination=${line.destination}&date=${formatDate(new Date())}`)}>Xem Chi Tiết</button>
                 </div>
               </div>
             </div>
@@ -80,5 +79,17 @@ function Lines(props) {
     // </div>
   );
 }
+
+const formatDate = (date) => {
+  var d = new Date(date),
+    month = "" + (d.getMonth() + 1),
+    day = "" + d.getDate(),
+    year = d.getFullYear();
+
+  if (month.length < 2) month = "0" + month;
+  if (day.length < 2) day = "0" + day;
+
+  return [year, month, day].join("-");
+};
 
 export default Lines;
